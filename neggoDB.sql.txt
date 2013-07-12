@@ -11,7 +11,7 @@ create table algorithm (id int not null auto_increment primary key,
 	description text default '');
 
 
-create table human9606 (
+create table rice39947 (
 	id int not null auto_increment primary key,
 	go_id varchar(10) not null,
 	gene_symbol varchar(25) not null,
@@ -20,3 +20,15 @@ create table human9606 (
 	go_category enum('BP', 'MF', 'CC'),
 	go_name varchar(255) default '',
 	foreign key (algorithm_id) references algorithm(id));
+
+human9606
+
+mouse10090
+
+yeast4932
+
+worm6239
+
+arabidopsis3702
+
+rice39947
