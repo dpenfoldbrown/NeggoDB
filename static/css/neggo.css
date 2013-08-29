@@ -1,0 +1,30 @@
+/* 
+ * CSS file for all neggo layout 
+ * @auth: dpb
+ * @date: 8/28/2013
+ */
+
+
+
+/* Footer styles */
+
+.footer {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left: 25px;
+    margin-right: 25px;
+    padding-top: 15px;
+    font-size: 75%;
+}
+.footer p {
+    /* text-align: center; */
+    margin: 2px 0;
+}
+.footer img {
+    width: 45px;
+    height: 45px;
+}
+.footer-icons {
+    display: inline;
+    float: right;
+}
