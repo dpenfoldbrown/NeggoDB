@@ -1,6 +1,0 @@
-NeggoDB TODO List:
-
-
-- Store some kind of date/version information in the DB (ref. Uniprot date for organisms, go access, etc)
-
-
