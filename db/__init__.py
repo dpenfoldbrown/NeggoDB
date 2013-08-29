@@ -1,3 +1,3 @@
 """
-Module indicator for NeggoDB python
+Module indicator for NeggoDB db functionality
 """
