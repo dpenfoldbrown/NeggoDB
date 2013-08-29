@@ -55,7 +55,7 @@ class Version(Base):
     )
     
     def __repr__(self, ):
-        return "<Version {0}, GO {1} Validation {2}>".format(self.id, self.go_date, self.validation_date)
+        return "<Version {0}: GO {1}, Validation {2}>".format(self.id, self.go_date, self.validation_date)
 
 class Human9606(Base):
     """
