@@ -5,6 +5,7 @@ NeggoDB SqlAlchemy ORM specification file
 """
 
 from sqlalchemy import *
+from sqlalchemy.orm import relation
 from sqlalchemy import create_engine
 from sqlalchemy.orm.session import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -75,9 +76,9 @@ class Mouse10090(Base):
     """
     Table representing the negative examples of genes per GO term in Human 9606
     """
-    __tablename__  = "Mouse10090"
+    __tablename__  = "mouse10090"
     __table_args__ = (
-        ForeignKeyContraint(['algorithm_id'], ['algorithm.id']),
+        ForeignKeyConstraint(['algorithm_id'], ['algorithm.id']),
         {'autoload': True}
     )
     algorithm = relation(Algorithm, primaryjoin="Mouse10090.algorithm_id==Algorithm.id", uselist=False)
@@ -90,9 +91,9 @@ class Yeast4932(Base):
     """
     Table representing the negative examples of genes per GO term in Human 9606
     """
-    __tablename__  = "Yeast4932"
+    __tablename__  = "yeast4932"
     __table_args__ = (
-        ForeignKeyContraint(['algorithm_id'], ['algorithm.id']),
+        ForeignKeyConstraint(['algorithm_id'], ['algorithm.id']),
         {'autoload': True}
     )
     algorithm = relation(Algorithm, primaryjoin="Yeast4932.algorithm_id==Algorithm.id", uselist=False)
@@ -101,28 +102,28 @@ class Yeast4932(Base):
     def __repr__(self, ):
         return "<Yeast4932 NegEG: {0}, gene {1}, algorithm {2}, rank {3}>".format(self.go_id, self.gene_symbol, self.algorithm.name, self.rank)
 
-class Worm6293(Base):
+class Worm6239(Base):
     """
     Table representing the negative examples of genes per GO term in Human 9606
     """
-    __tablename__  = "Worm6293"
+    __tablename__  = "worm6239"
     __table_args__ = (
-        ForeignKeyContraint(['algorithm_id'], ['algorithm.id']),
+        ForeignKeyConstraint(['algorithm_id'], ['algorithm.id']),
         {'autoload': True}
     )
-    algorithm = relation(Algorithm, primaryjoin="Worm6293.algorithm_id==Algorithm.id", uselist=False)
-    version = relation(Version, primaryjoin="Worm6293.version_id==Version.id", uselist=False)
+    algorithm = relation(Algorithm, primaryjoin="Worm6239.algorithm_id==Algorithm.id", uselist=False)
+    version = relation(Version, primaryjoin="Worm6239.version_id==Version.id", uselist=False)
 
     def __repr__(self, ):
-        return "<Worm6293 NegEG: {0}, gene {1}, algorithm {2}, rank {3}>".format(self.go_id, self.gene_symbol, self.algorithm.name, self.rank)
+        return "<Worm6239 NegEG: {0}, gene {1}, algorithm {2}, rank {3}>".format(self.go_id, self.gene_symbol, self.algorithm.name, self.rank)
 
 class Arabidopsis3702(Base):
     """
     Table representing the negative examples of genes per GO term in Human 9606
     """
-    __tablename__  = "Arabidopsis3702"
+    __tablename__  = "arabidopsis3702"
     __table_args__ = (
-        ForeignKeyContraint(['algorithm_id'], ['algorithm.id']),
+        ForeignKeyConstraint(['algorithm_id'], ['algorithm.id']),
         {'autoload': True}
     )
     algorithm = relation(Algorithm, primaryjoin="Arabidopsis3702.algorithm_id==Algorithm.id", uselist=False)
@@ -136,9 +137,9 @@ class Rice39947(Base):
     """
     Table representing the negative examples of genes per GO term in Human 9606
     """
-    __tablename__  = "Rice39947"
+    __tablename__  = "rice39947"
     __table_args__ = (
-        ForeignKeyContraint(['algorithm_id'], ['algorithm.id']),
+        ForeignKeyConstraint(['algorithm_id'], ['algorithm.id']),
         {'autoload': True}
     )
     algorithm = relation(Algorithm, primaryjoin="Rice39947.algorithm_id==Algorithm.id", uselist=False)
