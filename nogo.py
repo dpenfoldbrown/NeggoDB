@@ -13,5 +13,16 @@ from db.nogoDB import *
 # Flask init
 app = Flask(__name__)
 
+
+# Routes
+
+@app.route('/')
+def index():
+	"""Home page"""
+	return render_template('index.html')
+
+
 if __name__ == "__main__":
+    #WARNING: Do not run in debug mode publicly (allows for code execution)
+    app.debug = True
     app.run()
