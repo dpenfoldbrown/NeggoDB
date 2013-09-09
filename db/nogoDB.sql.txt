@@ -2,7 +2,7 @@
 NEGGO database operations:
 
 
-create database neggoDB;
+create database noGO;
 
 
 create table algorithm (id int not null auto_increment primary key, 

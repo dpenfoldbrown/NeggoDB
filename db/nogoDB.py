@@ -12,7 +12,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 url = "mysql://dpb:dpb_nyu@handbanana.bio.nyu.edu:3306/"
 
-def setup(db="neggoDB", echo=False, recycle=3600):
+def setup(db="noGO", echo=False, recycle=3600):
     e = create_engine(url+db, echo=echo, pool_recycle=recycle)
     b = declarative_base(bind=e)
     s = sessionmaker(bind=e)

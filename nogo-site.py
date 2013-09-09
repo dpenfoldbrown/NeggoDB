@@ -8,7 +8,7 @@ NeggoDB (negative gene annotation database) Python+Flask-based web site definiti
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, _app_ctx_stack
 from flask.ext.sqlalchemy import SQLAlchemy
 
-from db.neggoDB import *
+from db.nogoDB import *
 
 # Flask init
 app = Flask(__name__)

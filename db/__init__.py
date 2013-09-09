@@ -1,3 +1,3 @@
 """
-Module indicator for NeggoDB db functionality
+Module indicator for noGO db functionality
 """
