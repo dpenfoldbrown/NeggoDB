@@ -9,6 +9,17 @@ create table algorithm (id int not null auto_increment primary key,
 	name varchar(100) not null,
 	description text default '');
 
+insert into algorithm (name, description) values (
+	'Rocchio',
+	'Algorithm adapted from a text-mining PU algorithm in [Rocchio, 1971]. The original method has been adapted from a binary decision to a score, allowing a variable number of negative examples to be chosen.');
+insert into algorithm (name, description) values (
+	'SNOB',
+	'(Selection of Negatives Through Observed) - SNOB chooses negative examples by scoring proteins based on the empirical conditional probability of the function in question occurring, based on the other annotations in the protein.');
+insert into algorithm (name, description) values (
+	'NETL',
+	'NETL (Negative Examples from Topic Likelihood) - NETL selects negative examples by creating a latent topic model for each function, and then scoring a protein by the similarity of its topic profile to the average topic profile of the positive class of proteins annotated with the function in question.');
+
+
 
 create table version ( 
 	id int not null auto_increment primary key,

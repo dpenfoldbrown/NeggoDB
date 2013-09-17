@@ -1,5 +1,5 @@
 """
-NeggoDB SqlAlchemy ORM specification file
+noGO SqlAlchemy ORM specification file
 @author dpb
 @date   7/11/2013
 """
@@ -18,6 +18,36 @@ def setup(db="noGO", echo=False, recycle=3600):
     s = sessionmaker(bind=e)
     return e,b,s
 Engine, Base, Session = setup()
+
+def push_to_db(session, object, exception_str=None, raise_on_duplicate=True):
+    """
+    A simple utility function to do the session add-flush-catch-refresh blocks.
+    If raise_on_duplicate is true, will raise exception on IntegrityError. If false, will rollback and continue
+        session - the Session to push ORM objects into
+        object  - the ORM object to add to the session (and DB)
+        exception_str   - a string to print when flushing the session fails (DB error)
+    """
+    if not exception_str:
+        exception_str = "Failed to add object {0} to DB".format(object)
+
+    session.add(object)
+    try: 
+        session.flush()
+    except IntegrityError:
+        print "Given object already exists in DB"
+        if raise_on_duplicate:
+            session.rollback()
+            print exception_str
+            raise
+        else:
+            print "Rolling back, returning None"
+            session.rollback()
+            return None 
+    except Exception:
+        print exception_str
+        raise
+    session.refresh(object)
+    return object
 
 
 class Algorithm(Base):
@@ -70,7 +100,7 @@ class Human9606(Base):
     version = relation(Version, primaryjoin="Human9606.version_id==Version.id", uselist=False)
 
     def __repr__(self, ):
-        return "<Human9606 NegEG: {0}, gene {1}, algorithm {2}, rank {3}>".format(self.go_id, self.gene_symbol, self.algorithm.name, self.rank)
+        return "<Human9606 NegEG: {0}, gene {1}, algorithm {2}, rank {3}>".format(self.go_id, self.gene_symbol, self.algorithm_id, self.rank)
 
 class Mouse10090(Base):
     """
@@ -85,7 +115,7 @@ class Mouse10090(Base):
     version = relation(Version, primaryjoin="Mouse10090.version_id==Version.id", uselist=False)
 
     def __repr__(self, ):
-        return "<Mouse10090 NegEG: {0}, gene {1}, algorithm {2}, rank {3}>".format(self.go_id, self.gene_symbol, self.algorithm.name, self.rank)
+        return "<Mouse10090 NegEG: {0}, gene {1}, algorithm {2}, rank {3}>".format(self.go_id, self.gene_symbol, self.algorithm_id, self.rank)
 
 class Yeast4932(Base):
     """
@@ -100,7 +130,7 @@ class Yeast4932(Base):
     version = relation(Version, primaryjoin="Yeast4932.version_id==Version.id", uselist=False)
 
     def __repr__(self, ):
-        return "<Yeast4932 NegEG: {0}, gene {1}, algorithm {2}, rank {3}>".format(self.go_id, self.gene_symbol, self.algorithm.name, self.rank)
+        return "<Yeast4932 NegEG: {0}, gene {1}, algorithm {2}, rank {3}>".format(self.go_id, self.gene_symbol, self.algorithm_id, self.rank)
 
 class Worm6239(Base):
     """
@@ -115,7 +145,7 @@ class Worm6239(Base):
     version = relation(Version, primaryjoin="Worm6239.version_id==Version.id", uselist=False)
 
     def __repr__(self, ):
-        return "<Worm6239 NegEG: {0}, gene {1}, algorithm {2}, rank {3}>".format(self.go_id, self.gene_symbol, self.algorithm.name, self.rank)
+        return "<Worm6239 NegEG: {0}, gene {1}, algorithm {2}, rank {3}>".format(self.go_id, self.gene_symbol, self.algorithm_id, self.rank)
 
 class Arabidopsis3702(Base):
     """
@@ -130,7 +160,7 @@ class Arabidopsis3702(Base):
     version = relation(Version, primaryjoin="Arabidopsis3702.version_id==Version.id", uselist=False)
 
     def __repr__(self, ):
-        return "<Arabidopsis3702 NegEG: {0}, gene {1}, algorithm {2}, rank {3}>".format(self.go_id, self.gene_symbol, self.algorithm.name, self.rank)
+        return "<Arabidopsis3702 NegEG: {0}, gene {1}, algorithm {2}, rank {3}>".format(self.go_id, self.gene_symbol, self.algorithm_id, self.rank)
 
 
 class Rice39947(Base):
@@ -146,5 +176,5 @@ class Rice39947(Base):
     version = relation(Version, primaryjoin="Rice39947.version_id==Version.id", uselist=False)
 
     def __repr__(self, ):
-        return "<Rice39947 NegEG: {0}, gene {1}, algorithm {2}, rank {3}>".format(self.go_id, self.gene_symbol, self.algorithm.name, self.rank)
+        return "<Rice39947 NegEG: {0}, gene {1}, algorithm {2}, rank {3}>".format(self.go_id, self.gene_symbol, self.algorithm_id, self.rank)
 
