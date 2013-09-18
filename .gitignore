@@ -1,3 +1,5 @@
+local_test
+
 *.swp
 
 *.py[cod]
