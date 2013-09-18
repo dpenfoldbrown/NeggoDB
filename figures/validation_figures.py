@@ -28,10 +28,10 @@ def singleGO_validation_figure(r_x, r_y, n_x, n_y, s_x, s_y, rand_x, rand_y, go_
 	#plt.axis('tight')
 	plt.legend(loc='upper left')
 
-	if show:
-		plt.show()
 	if outfile:
 		plt.savefig(outfile)
+	if show:
+		plt.show()
 	plt.close()
 
 if __name__ == "__main__":
