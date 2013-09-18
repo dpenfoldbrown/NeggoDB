@@ -6,41 +6,63 @@ Generate figures for validation data
 
 import matplotlib.pyplot as plt
 
-R_x = [6, 32, 64, 160, 319, 638, 957, 1275]
-R_y = [0,  0,  0,   0,   0,    2,  2,    4]
 
-N_x = [6, 32, 64, 160, 319, 638, 957, 1275]
-N_y = [1,  2,  3,   1,   0,    3,  1,    4]
+def singleGO_validation_figure(r_x, r_y, n_x, n_y, s_x, s_y, rand_x, rand_y, go_term="GO:0000000", 
+		go_cat="NN", organism="Unknown", show=False, outfile=None):
 
-S_x = [6, 32, 64, 160, 319, 638, 957, 1275]
-S_y = [1,  1,  0,   0,   0,    1,  2,    3]
+	xmax = max(R_x + N_x + S_x + rand_x)
+	ymax = max(R_y + N_y + S_y + rand_y)
+	xscale = int(xmax + (xmax * 0.01))
+	yscale = int(ymax + (ymax * 0.4))
 
-rand_x = [6, 32, 64, 160, 319, 638, 957, 1275]
-rand_y = [4,  5,  5,   2,   6,   8,  4,     7]
+	plt.title("Sample Accuracy: {0} ({1}), {2}".format(go_term, go_cat, organism))
+	plt.xlabel("Number of selected negative examples")
+	plt.ylabel("Number of erroneous negative examples")
 
-#TODO: Do not use scale data to pad charts
+	plt.plot(r_x, r_y, 'm-', linewidth=2.0, label="Rocchio")
+	plt.plot(n_x, n_y, 'r-', linewidth=2.0, label="NETL")
+	plt.plot(s_x, s_y, 'y-', linewidth=2.0, label="SNOB")
+	plt.plot(rand_x, rand_y, 'b-.', linewidth=2.0, label="Random")
 
-xmax = max(R_x + N_x + S_x + rand_x)
-ymax = max(R_y + N_y + S_y + rand_y)
-xscale = int(xmax + (xmax * 0.01))
-yscale = int(ymax + (ymax * 0.4))
-scale_x = [0, xscale]
-scale_y = [0, yscale]
+	plt.axis([0, xscale, 0, yscale])
+	#plt.axis('tight')
+	plt.legend(loc='upper left')
 
-fig = plt.figure()
-ax = fig.add_axes([0.1, 0.1, 0.75, 0.75])
+	if show:
+		plt.show()
+	if outfile:
+		plt.savefig(outfile)
+	plt.close()
 
-ax.set_title("Sample Accuracy: GO <GoID>, <GO Category>, <Organism>")
-ax.set_xlabel("Number of selected negative examples")
-ax.set_ylabel("Number of erroneous negative examples")
+if __name__ == "__main__":
 
-ax.plot(scale_x, scale_y, ' ')
-ax.plot(R_x, R_y, 'm-', linewidth=2.0, label="Rocchio")
-ax.plot(N_x, N_y, 'r-', linewidth=2.0, label="NETL")
-ax.plot(S_x, S_y, 'y-', linewidth=2.0, label="SNOB")
-ax.plot(rand_x, rand_y, 'b-.', linewidth=2.0, label="Random")
+	# Sample data
+	R_x = [6, 32, 64, 160, 319, 638, 957, 1275]
+	R_y = [0,  0,  0,   0,   0,    2,  2,    4]
 
-ax.legend(loc='upper left')
+	N_x = [6, 32, 64, 160, 319, 638, 957, 1275]
+	N_y = [1,  2,  3,   3,   3,    3,  4,    4]
 
-plt.show()
-plt.close()
+	S_x = [6, 32, 64, 160, 319, 638, 957, 1275]
+	S_y = [0,  1,  2,   2,   3,    4,  5,    5]
+
+	rand_x = [6, 32, 64, 160, 319, 638, 957, 1275]
+	rand_y = [4,  5,  5,   6,   6,   8,  9,    10]
+
+	singleGO_validation_figure(
+		R_x, R_y, 
+		N_x, N_y, 
+		S_x, S_y, 
+		rand_x, rand_y, 
+		go_term="GO:000TEST", 
+		go_cat="TT", 
+		organism="TestOrg", 
+		show=True,
+		outfile="test_figure_01.png")
+
+
+
+
+
+
+
