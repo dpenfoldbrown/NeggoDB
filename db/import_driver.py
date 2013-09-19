@@ -32,7 +32,7 @@ def run_organism(organism, base_dir):
             
             print "Importing files {0}, {1}, {2}".format(gene_file, go_file, prediction_file)
             # (go_file, gene_file, prediction_file, algorithm_id, organism, go_category, version)
-            import_predictions(go_file, gene_file, prediction_file, Algorithms[a], organism, cat, 1)
+            import_predictions(go_file, gene_file, prediction_file, Algorithms[alg], organism, cat, 1)
     print "Complete"
 
 
