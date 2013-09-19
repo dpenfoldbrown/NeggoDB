@@ -36,12 +36,12 @@ def import_predictions(go_file, gene_file, prediction_file, algorithm_id, organi
     
     # Get DBO class reference based on organism
     dbc_dict = {
-        'arabidopsis3702': Arabidopsis3702,
-        'human9606': Human9606,
-        'mouse10090': Mouse10090,
-        'rice39947': Rice39947,
-        'worm6239': Worm6239,
-        'yeast4932': Yeast4932,
+        'arabidopsis': Arabidopsis3702,
+        'human': Human9606,
+        'mouse': Mouse10090,
+        'rice': Rice39947,
+        'worm': Worm6239,
+        'yeast': Yeast4932,
     }
     try:
         org_dbc = dbc_dict[organism]
@@ -52,7 +52,6 @@ def import_predictions(go_file, gene_file, prediction_file, algorithm_id, organi
     # Open Go Names dictionary and pull into memory
     with open(go_name_dict) as handle:
         go_names = pickle.load(handle)
-
 
     # Build go term and gene name dicts (key is 1-based index)
     go_dict = build_index_dict(go_file)
@@ -100,8 +99,7 @@ def import_predictions(go_file, gene_file, prediction_file, algorithm_id, organi
 
             go_term_index += 1     
         
-    print "Processing prediction file {0} complete".format(prediction_file)       
-
+    print "Processing prediction file {0} complete".format(prediction_file)
 
 
 if __name__ == "__main__":

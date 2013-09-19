@@ -25,7 +25,6 @@ def singleGO_validation_figure(r_x, r_y, n_x, n_y, s_x, s_y, rand_x, rand_y, go_
 	plt.plot(rand_x, rand_y, 'b-.', linewidth=2.0, label="Random")
 
 	plt.axis([0, xscale, 0, yscale])
-	#plt.axis('tight')
 	plt.legend(loc='upper left')
 
 	if outfile:
