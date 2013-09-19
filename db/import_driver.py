@@ -29,7 +29,7 @@ def run_organism(organism, base_dir):
         for cat in GO_cats:
             go_file = os.path.join(go_dir, "GO_Terms_{0}_{1}.txt".format(organism, cat))
             prediction_file = os.path.join(prediction_dir, "{0}_{1}_{2}.txt".format(alg, organism, cat))
-
+            
             print "Importing files {0}, {1}, {2}".format(gene_file, go_file, prediction_file)
             # (go_file, gene_file, prediction_file, algorithm_id, organism, go_category, version)
             import_predictions(go_file, gene_file, prediction_file, Algorithms[a], organism, cat, 1)
