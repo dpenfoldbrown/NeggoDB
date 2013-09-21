@@ -15,22 +15,46 @@
     
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/x-icon" />
 
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" media="screen" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/nogo.css') }}" />
 
 </head>
 
 <body>
-    <script src="{{ url_for('static', filename='js/jquery-1.10.2.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/knockout-2.3.0.js') }}"></script>
-    <!-- ...scripts... -->
 
-    <div class="navbar">
-        <!-- ... -->
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for('index') }}">NoGO DB</a>
+            </div>
+
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('downloads') }}">Downloads</a></li>
+                    <li><a href="{{ url_for('sources') }}">Sources</a></li>
+                    <li><a href="{{ url_for('about') }}">About</a></li>
+                </ul>
+            </div>
+
+            <div class="messages pull-right">
+                {% for message in get_flashed_messages() %}
+                    <div class=flash>{{ message }}</div>
+                {% endfor %}
+            </div>
+
+        </div>
     </div>
 
-
     <div class="container">
+
         {% block body %}{% endblock %}
+
     </div>
 
 
@@ -40,8 +64,13 @@
             <a href="http://www.nyu.edu/" target="_blank"><img src="{{ url_for('static', filename='img/nyu-small.png') }}" alt="NYU"/></a>
         </div>
         <p>Site and data &copy; 2013 Noah Youngs, Richard Bonneau, Duncan Penfold-Brown</p>
-        <p>Site in progress!</p>
+        <p>Site in progress...</p>
     </div>
+
+    <!-- Scripts at the bottom for faster page load (?) -->
+    <script src="{{ url_for('static', filename='js/jquery-1.10.2.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/knockout-2.3.0.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
 </body>
 </html>
