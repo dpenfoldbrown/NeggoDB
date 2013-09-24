@@ -5,11 +5,13 @@
  */
 
 
-/* Custom for navbar spacing */
+/* Basic body layout */
+
 body {
     min-height: 500px;
     padding-top: 70px;
 }
+
 
 /* Footer styles */
 
