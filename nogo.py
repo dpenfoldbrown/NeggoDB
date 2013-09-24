@@ -23,6 +23,14 @@ def index():
     """Home page"""
     return render_template('index.html')
 
+@app.route('/data', methods=['GET'])
+def data_request():
+    """
+    Method to handle requests for data. Parameters in the 'request' object (parse and check first).
+    Should have: Organism, Go Category, Go Term [optional], Algorithm [1+]
+    """
+    return render_template('bad_request.html', request=request)
+
 @app.route('/downloads')
 def downloads():
     """Static downloads page"""

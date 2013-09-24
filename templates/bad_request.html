@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block body %}
+
+    <div class="jumbotron">
+        <h3>Error!</h3>
+        <p>There was a problem with your request - see the error message below. If you are in the right, please email us. Otherwise, please check your request and try again.<p>
+    </div>
+    
+    {% if request %}
+        
+        <p>Your request terms were not understood. Terms: </p>
+        {% for t in request.values %}
+            <blockquote><p>{{t}} : {{request.values[t]}}</p></blockquote>
+        {% endfor %}
+    
+    {% else %}
+            
+        <p>Unknown error.</p>
+    
+    {% endif %}
+
+{% endblock %}

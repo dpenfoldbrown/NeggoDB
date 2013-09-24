@@ -3,62 +3,82 @@
     
     <div class="jumbotron">
         <h3>Welcome to the NoGO Database</h3>
-        <p>A resource for negative examples of function across the genes of six organisms</p>
+        <p>A resource for negative examples of <a target="_blank" href="http://www.geneontology.org/">GO</a> function across the genes of six organisms</p>
     </div>
 
     <div class="row">
         <div class="col-md-6">
-            <p>Select the data you would like to download:</p>
+            <div class="column-header"><p>Select the data you would like to download:</p></div>
 
             <!-- Data form -->
-            <form role="form">
+            <form role="form" action="{{ url_for('data_request') }}" method=GET>
                 <div class="form-group">
-                    <label for="f_organism">Organism</label>
-                    <select id="f_organism" class="form-control">
-                        <!-- -->
-                        <!-- TEMPLATE: each organism -->
-                        <!-- -->
-                        <option value="Yeast">Yeast</option>
-                    </select>
+                    <label for="f_organism" class="col-lg-3">Organism</label>
+                    <div class="col-lg-9">
+                        <select id="f_organism" name="organism" class="form-control input-sm">
+                            <!-- -->
+                            <!-- TEMPLATE: each organism -->
+                            <!-- -->
+                            <option value="">Select an organism...</option>
+                            
+                            <option value="Yeast">Yeast</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="f_category">GO Category</label>
-                    <select disabled id="f_category" class="form-control">
-                        <!-- -->
-                        <!-- TEMPLATE: each category -->
-                        <!-- -->
-                        <option value="CC">CC</option>
-                    </select>
+                    <label for="f_category" class="col-lg-3">GO Category</label>
+                    <div class="col-lg-9">
+                        <select id="f_category" name="gocategory" class="form-control input-sm">
+                            <!-- -->
+                            <!-- TEMPLATE: each category -->
+                            <!-- -->
+                            <option value="">Select a GO category...</option>
+
+                            <option value="CC">CC</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="f_goterm">GO Term</label>
-                    <!-- -->
-                    <!-- TODO: Combo box with autocomplete on all GO terms? Nah. -->
-                    <!-- -->
-                    <input disabled id="f_goterm" type="text" class="form-control" placeholder="GO ID here..." />
+                    <label for="f_goterm" class="col-lg-3">GO Term</label>
+                    <div class="col-lg-9">
+                        <!-- -->
+                        <!-- TODO: Combo box with autocomplete on all GO terms? Nah. -->
+                        <!-- -->
+                        <input id="f_goterm" name="goterm" type="text" class="form-control input-sm" placeholder="GO ID here..." />
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Algorithm</label> 
-                    <br />
+                <label class="col-lg-3">Algorithm</label> 
+                <div class="form-group col-lg-9">
                     <!-- -->
                     <!-- TEMPLATE: each algorithm -->
                     <!-- -->
-                    <label class="checkbox-inline"><input type="checkbox" value="Rocchio">Rocchio</label>
+                    <label class="checkbox-inline"><input name="Rocchio" type="checkbox" value=True>Rocchio</label>
+                    <label class="checkbox-inline"><input name="NETL" type="checkbox" value=True>NETL</label>
+                    <label class="checkbox-inline"><input name="SNOB" type="checkbox" value=True>SNOB</label>
                 </div>
 
                 <!-- Use stateful buttons from bootstrap -->
-                <br />
-                <button disabled type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary btn-sm">Download</button>
             </form>
 
         </div>
 
-           <div class="col-md-6">
-            <p>[figure for selection]</p>
+        <div class="col-md-6">
+            <div class="column-header"><p>Figure for current selection:</p></div>
+            <a target="_blank" href="{{ url_for('static', filename='img/fig/sample01.png') }}">
+                <img id="selection-fig" src="{{ url_for('static', filename='img/fig/sample01.png') }}" alt="Accuracy figure for selection">
+            </a>
+
         </div>
     </div>
 
 {% endblock %}
+
+
+
+
+
+
