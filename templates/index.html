@@ -18,6 +18,7 @@
                         <select id="f_organism" name="organism" class="form-control input-sm">
                             <!-- -->
                             <!-- TEMPLATE: each organism -->
+                            <!-- TODO: Add each organism to the Database (name, taxid, filename, and id) -->
                             <!-- -->
                             <option value="">Select an organism...</option>
                             
@@ -30,12 +31,10 @@
                     <label for="f_category" class="col-lg-3">GO Category</label>
                     <div class="col-lg-9">
                         <select id="f_category" name="gocategory" class="form-control input-sm">
-                            <!-- -->
-                            <!-- TEMPLATE: each category -->
-                            <!-- -->
                             <option value="">Select a GO category...</option>
-
-                            <option value="CC">CC</option>
+                            <option value="BP">Biological Process (BP)</option>
+                            <option value="CC">Cellular Component (CC)</option>
+                            <option value="MF">Molecular Function (MF)</option>
                         </select>
                     </div>
                 </div>
@@ -44,7 +43,9 @@
                     <label for="f_goterm" class="col-lg-3">GO Term</label>
                     <div class="col-lg-9">
                         <!-- -->
-                        <!-- TODO: Combo box with autocomplete on all GO terms? Nah. -->
+                        <!-- TODO: Combo box with autocomplete on all GO terms? Nah. If box content were id:name pair, combobox search would be cool... -->
+                        <!-- TODO: Check entry (on focusout) for validity - must have a list of all terms -->
+                        <!-- TODO: '-> Store a list of all terms in DB (GO id, id, name) -->
                         <!-- -->
                         <input id="f_goterm" name="goterm" type="text" class="form-control input-sm" placeholder="GO ID here..." />
                     </div>

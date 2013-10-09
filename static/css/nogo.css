@@ -28,6 +28,12 @@ body {
     font-size: 19px;
 }
 
+/* Form styles */
+
+.input-sm {
+    margin-bottom: 5px;
+}
+
 /* Image styling for index's selection-based figure */
 
 #selection-fig {
