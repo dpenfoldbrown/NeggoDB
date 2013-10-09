@@ -1,4 +1,4 @@
-NeggoDB
+NoGO DB
 =======
 
 Web resource for Gene/GO negative example exposition
