@@ -8,6 +8,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import relation
 from sqlalchemy import create_engine
 from sqlalchemy.orm.session import sessionmaker
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.declarative import declarative_base
 
 url = "mysql://dpb:dpb_nyu@handbanana.bio.nyu.edu:3306/"
