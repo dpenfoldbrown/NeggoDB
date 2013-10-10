@@ -4,6 +4,17 @@
  * @date: 8/28/2013
  */
 
+/* Misc. text styles */
+
+.note {
+    background-color: #ffffff;
+    color: #70BFB2;
+}
+
+.email {
+    background-color: #ffffff;
+    color: #70BFB2;
+}
 
 /* Basic body layout */
 
@@ -45,8 +56,8 @@ body {
 /* Footer styles */
 
 .footer {
-    margin-top: 30px;
-    margin-bottom: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     margin-left: 25px;
     margin-right: 25px;
     padding-top: 15px;
