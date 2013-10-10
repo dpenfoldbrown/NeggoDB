@@ -36,11 +36,6 @@ def downloads():
     """Static downloads page"""
     return render_template('downloads.html')
 
-@app.route('/sources')
-def sources():
-    """Sources page"""
-    return render_template('sources.html')
-
 @app.route('/about')
 def about():
     """About page"""
