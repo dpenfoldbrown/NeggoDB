@@ -1,9 +1,184 @@
 {% extends "layout.html" %}
 {% block body %}
-	<h1>Downloads</h1>
 
-	<div>
-	    <p>[Static prediction file downloads (all tarred files?)]</p>
-	</div>
+    <div class="jumbotron">
+        <h3>NoGO Data Downloads</h3>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <p>Each <span class="note">Algorithm</span> section below (Rocchio, SNOB, and NETL) contains all negative example prediction files for its respective algorithm. Files are separated by <span class="note">Organism</span> and <span class="note">GO branch</span> (Biological Process, Cellular Component, and Molecular Function).</p>
+            <p>Please see the <a target="_blank" href="{{ url_for('static', filename='files/README.txt') }}">README</a> for an explanation of file format (re: Static file format).</p>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="column-header">Rocchio</div>
+            <div class="panel panel-default">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <tr class="active">
+                            <th>Organism</th>
+                            <th>BP</th>
+                            <th>CC</th>
+                            <th>MF</th>
+                        </tr>
+                        <tr>
+                            <td>Human (9606)</td>
+                            <td><a class="block-link" href="">(.tar.gz)</a></td>
+                            <td><a class="block-link" href="">(.tar.gz)</a></td>
+                            <td><a class="block-link" href="">(.tar.gz)</a></td>
+                        </tr>
+                        <tr>
+                            <td>Mouse (10090)</td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                        </tr>
+                        <tr>
+                            <td>Worm (6239)</td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                        </tr>
+                        <tr>
+                            <td>Arabidopsis (3702)</td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                        </tr>
+                        <tr>
+                            <td>Rice (29947)</td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                        </tr>
+                        <tr>
+                            <td>Yeast (4932)</td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+
+            <br />
+        </div>
+
+        <div class="col-md-4">
+            <div class="column-header">SNOB</div>
+            <div class="panel panel-default">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <tr class="active">
+                            <th>Organism</th>
+                            <th>BP</th>
+                            <th>CC</th>
+                            <th>MF</th>
+                        </tr>
+                        <tr>
+                            <td>Human (9606)</td>
+                            <td><a class="block-link" href="">(.tar.gz)</a></td>
+                            <td><a class="block-link" href="">(.tar.gz)</a></td>
+                            <td><a class="block-link" href="">(.tar.gz)</a></td>
+                        </tr>
+                        <tr>
+                            <td>Mouse (10090)</td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                        </tr>
+                        <tr>
+                            <td>Worm (6239)</td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                        </tr>
+                        <tr>
+                            <td>Arabidopsis (3702)</td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                        </tr>
+                        <tr>
+                            <td>Rice (29947)</td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                        </tr>
+                        <tr>
+                            <td>Yeast (4932)</td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <br />
+        </div>
+
+        <div class="col-md-4">
+            <div class="column-header">NETL</div>
+            <div class="panel panel-default">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <tr class="active">
+                            <th>Organism</th>
+                            <th>BP</th>
+                            <th>CC</th>
+                            <th>MF</th>
+                        </tr>
+                        <tr>
+                            <td>Human (9606)</td>
+                            <td><a class="block-link" href="">(.tar.gz)</a></td>
+                            <td><a class="block-link" href="">(.tar.gz)</a></td>
+                            <td><a class="block-link" href="">(.tar.gz)</a></td>
+                        </tr>
+                        <tr>
+                            <td>Mouse (10090)</td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                        </tr>
+                        <tr>
+                            <td>Worm (6239)</td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                        </tr>
+                        <tr>
+                            <td>Arabidopsis (3702)</td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                        </tr>
+                        <tr>
+                            <td>Rice (29947)</td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                        </tr>
+                        <tr>
+                            <td>Yeast (4932)</td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                            <td><a href="">(.tar.gz)</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <br />
+        </div>
+
+    </div>
 
 {% endblock %}
