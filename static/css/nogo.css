@@ -4,7 +4,7 @@
  * @date: 8/28/2013
  */
 
-/* Misc. text styles */
+/* Misc. text and link styles */
 
 .note {
     background-color: #ffffff;
@@ -14,6 +14,10 @@
 .email {
     background-color: #ffffff;
     color: #70BFB2;
+}
+
+.block-link {
+    display: block;
 }
 
 /* Basic body layout */
