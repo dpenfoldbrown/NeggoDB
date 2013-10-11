@@ -5,7 +5,7 @@ NoGO README
 @date 10/10/2013
 
 
-Static File Format
+Static file format
 ==================
 
 The static files available for download on the 'Download' page (NoGO/downloads) have the following
