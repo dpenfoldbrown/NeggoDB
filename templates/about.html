@@ -1,9 +1,40 @@
 {% extends "layout.html" %}
 {% block body %}
-	<h1>About NoGO</h1>
+	<div class="jumbotron">
+        <h3>About the NoGO Database</h3>
+    </div>
 
-	<div>
-	    <p>[About the project and contact information]</p>
-	</div>
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="column-header">The Algorithms</div>
+        	<div>
+                <h4>Rocchio Algorithm</h4>
+                <p>Adapted from a text-mining PU algorithm in [Rocchio, 1971]. The original method has been adapted from a binary decision to a score, allowing a variable number of negative examples to be chosen.</p>
+
+                <h4>SNOB (Selection of Negatives Through Observed)</h4>
+                <p>SNOB chooses negative examples by scoring proteins based on the empirical conditional probability of the function in question occurring, based on the other annotations in the protein.</p>
+
+                <h4>NETL (Negative Examples from Topic Likelihood)</h4>
+                <p>NETL selects negative examples by creating a latent topic model for each function, and then scoring a protein by the similarity of its topic profile to the average topic profile of the positive class of proteins annotated with the function in question.</p>
+        	</div>
+
+            <br />
+
+        </div>
+
+        <div class="col-md-6">
+            <div class="column-header">The Team</div>
+            <div>
+                <h4>The Lab</h4>
+                <p>This project was undertaken in the <a target="_blank" href="http://bonneaulab.bio.nyu.edu/">Bonneau Lab</a>, primarily as PhD work of Noah Youngs.</p>
+                <h4>Contacts</h4>
+                <p>Noah Youngs, super student scientist (<span class="email">nyoungs[at]nyu.edu</span>)</p>
+                <p>Duncan Penfold-Brown, super research engineer (<span class="email">dpb3[at]nyu.edu</span>)</p>
+                <p>Dr. Richard Bonneau, PI and supervisor (<span class="email">bonneau[at]nyu.edu</span>)</p>
+            </div>
+        </div>
+
+    </div>
 
 {% endblock %}
