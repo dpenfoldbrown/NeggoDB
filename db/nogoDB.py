@@ -88,6 +88,35 @@ class Version(Base):
     def __repr__(self, ):
         return "<Version {0}: GO {1}, Validation {2}>".format(self.id, self.go_date, self.validation_date)
 
+class ValidationPlot(Base):
+    """
+    Table to hold all validation plot information for Alg, Org, GoCat, GoTerm
+    """
+    __tablename__ = "validation_plot"
+    __table_args__ = (
+        ForeignKeyConstraint(['algorithm_id'], ['algorithm.id']),
+        ForeignKeyConstraint(['version_id'], ['version.id']),
+        {'autoload': True}
+    )
+    
+    algorithm = relation(Algorithm, primaryjoin="ValidationPlot.algorithm_id==Algorithm.id", uselist=False)
+    version = relation(Version, primaryjoin="ValidationPlot.version_id==Version.id", uselist=False)
+
+    def __repr__(self, ):
+        return "<Validation plot for {0}, {1}, {2}, {3}".format(self.algorithm_id, self.organism, 
+            self.go_category, self.go_id)
+
+    def get_xlist(self, ):
+        return [self.p1_x, self.p2_x, self.p3_x, self.p4_x, self.p5_x, self.p6_x, self.p7_x, self.p8_x]
+
+    def get_ylist(self, ):
+        return [self.p1_y, self.p2_y, self.p3_y, self.p4_y, self.p5_y, self.p6_y, self.p7_y, self.p8_y]
+
+    def get_pairs(self, ):
+        return [ (self.p1_x, self.p1_y), (self.p1_x, self.p1_y), (self.p1_x, self.p1_y), (self.p1_x, self.p1_y),
+                 (self.p1_x, self.p1_y), (self.p1_x, self.p1_y), (self.p1_x, self.p1_y), (self.p1_x, self.p1_y)]
+
+
 class Human9606(Base):
     """
     Table representing the negative examples of genes per GO term in Human 9606
