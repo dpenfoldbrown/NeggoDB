@@ -79,11 +79,11 @@ for algorithm in algorithms:
                     p8_x=points[7][0], p8_y=points[7][1],
                 )
 
-                print "Pushing validation plot: {0}".format(v)
-                print "\tPoints: {0}".format(points)
+                #print "Pushing validation plot: {0}".format(v)
+                #print "\tPoints: {0}".format(points)
 
-                #push_to_db(session, v, exception_str="Failed pushing plot for {0},{1},{2},{3} to DB".format(
-                #    algorithm, organism, category, go_dict[row_index]))
+                push_to_db(session, v, exception_str="Failed pushing plot for {0},{1},{2},{3} to DB".format(
+                    algorithm, organism, category, go_dict[row_index]))
                 
                 row_index += 1
 
