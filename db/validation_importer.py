@@ -43,7 +43,7 @@ for algorithm in algorithms:
             go_dict = build_index_dict(go_filename, start=1, header=False)
 
             # Open validation file
-            filename = os.path.join(validation_dir, "Validation_{}_{}_{}.txt".format(algorithm, organism, category))
+            filename = os.path.join(validation_dir, "Validation_{0}_{1}_{2}.txt".format(algorithm, organism, category))
             print "Importing Validation numbers from file {0}".format(filename)
             try:
                 handle = open(filename)
