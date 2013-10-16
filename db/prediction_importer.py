@@ -90,7 +90,6 @@ def import_predictions(go_file, gene_file, prediction_file, algorithm_id, organi
                         go_name=go_name,
                         version_id=version)
 
-                #TODO: Add db_entry to database! For now, just print for testing
                 #print "Prediction entry: {0}".format(db_entry)
                 push_to_db(session, db_entry, exception_str="Failed to add {0} to database".format(db_entry), 
                            raise_on_duplicate=False)
