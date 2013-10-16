@@ -13,7 +13,7 @@ def parse_pointstr(pointstr):
     points = pointstr.rstrip().replace("(", "").replace(")", "").split(',')
     if len(points) != 2:
         raise Exception("Point string {0} not in correct format".format(pointstr))
-    return map(int, points)
+    return map(float, points)
 
 
 import os
@@ -58,7 +58,7 @@ for algorithm in algorithms:
             for line in handle:
                 columns = line.rstrip().split()
                 if len(columns) < 9:
-                    print "No validation data for line '{0}'. Skipping...".format(line)
+                    print "No validation data for line '{0}'. Skipping...".format(line.rstrip())
                     continue
                 columns = columns[1:]
                 points = map(parse_pointstr, columns)
