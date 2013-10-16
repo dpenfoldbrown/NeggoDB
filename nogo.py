@@ -45,6 +45,9 @@ if __name__ == "__main__":
     #WARNING: Do not run in debug mode publicly (allows for code execution)
     app.debug = True
 
+    #WARNING: Do not share the secret key (obviously). Generate: os.urandom(24)
+    app.secret_key = '\xbf\x18\xbc\xb2O#\xf7!{\t\xd3$i\xd7$_w\xeb\x01}V\xb1{p'
+
     # Logging setup
     if not app.debug:
         import logging
