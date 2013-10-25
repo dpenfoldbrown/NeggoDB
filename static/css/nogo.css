@@ -31,6 +31,13 @@ body {
     border-radius: 6px;
 }
 
+ .column-note {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: #999999;
+ }
+
 /* Jumbotron customization */
 .jumbotron {
     padding-left: 60px;
