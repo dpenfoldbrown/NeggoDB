@@ -13,7 +13,7 @@
             <div class="column-note">Fields after 'Organism' are enabled successively as you select. Download is enabled when all fields are selected.</div>
 
             <!-- Data form -->
-            <form role="form" action="{{ url_for('data_request') }}" method=GET>
+            <form role="form" action="{{ url_for('data_request') }}" method=POST>
                 <div class="form-group">
                     <label for="f_organism" class="col-lg-3">Organism</label>
                     <div class="col-lg-9">
@@ -60,7 +60,6 @@
                     <label class="checkbox-inline"><input disabled id="alg_snob" class="f_algorithm" name="SNOB" type="checkbox">SNOB</label>
                 </div>
 
-                <!-- Use stateful buttons from bootstrap -->
                 <button disabled id="f_download" type="submit" class="btn btn-primary btn-sm">Download</button>
             </form>
 
