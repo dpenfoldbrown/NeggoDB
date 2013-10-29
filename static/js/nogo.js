@@ -23,34 +23,37 @@
     var button_accessor = $("#f_download");
 
     // Behavior on change of Organism select box (enable GO Branch select box)
-    org_accessor.change(function(e) {
+    function setBranchField(e) {
         if (org_accessor.val() == "") {
             branch_accessor.attr("disabled", "disabled");
             return;
         }
         branch_accessor.removeAttr("disabled");
-    })
+    }
+    org_accessor.change(setBranchField);
 
     // Behavior on change of GO Branch select box (enable GO Term input)
-    branch_accessor.change(function(e) {
+    function setTermField(e) {
         if (branch_accessor.val() == "") {
             term_accessor.attr("disabled", "disabled");
             return;
         }
         term_accessor.removeAttr("disabled");
-    })
+    }
+    branch_accessor.change(setTermField);
 
     // Behavior on change of GO Term input box (enable Algorithm checkboxes)
-    term_accessor.change(function(e) {
+    function setAlgorithmsField(e) {
         if (term_accessor.val() == "") {
             algs_accessor.attr("disabled", "disabled");
             return;
         }
         algs_accessor.removeAttr("disabled");
-    })
+    }
+    term_accessor.change(setAlgorithmsField);
 
     // Behavior on change of Algorithm checkboxes (enable download button if disabled)
-    algs_accessor.change(function(e) {
+    function setButtonField(e) {
         var rocc_selected = $("#alg_rocc").is(':checked');
         var netl_selected = $("#alg_netl").is(':checked');
         var snob_selected = $("#alg_snob").is(':checked');
@@ -60,6 +63,13 @@
         } else {
             button_accessor.attr("disabled", "disabled");
         }
-    })
+    }
+    algs_accessor.change(setButtonField);
+
+    // On page load (here), call all functions to make sure of correct enable/disable scheme
+    setBranchField(null);
+    setTermField(null);
+    setAlgorithmsField(null);
+    setButtonField(null);
 
  })
