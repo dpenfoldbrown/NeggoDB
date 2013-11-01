@@ -112,9 +112,9 @@ class ValidationPlot(Base):
     def get_ylist(self, ):
         return [self.p1_y, self.p2_y, self.p3_y, self.p4_y, self.p5_y, self.p6_y, self.p7_y, self.p8_y]
 
-    def get_pairs(self, ):
-        return [ (self.p1_x, self.p1_y), (self.p1_x, self.p1_y), (self.p1_x, self.p1_y), (self.p1_x, self.p1_y),
-                 (self.p1_x, self.p1_y), (self.p1_x, self.p1_y), (self.p1_x, self.p1_y), (self.p1_x, self.p1_y)]
+    def get_points(self, ):
+        return [ (self.p1_x, self.p1_y), (self.p2_x, self.p2_y), (self.p3_x, self.p3_y), (self.p4_x, self.p4_y),
+                 (self.p5_x, self.p5_y), (self.p6_x, self.p6_y), (self.p7_x, self.p7_y), (self.p8_x, self.p8_y)]
 
 
 class Human9606(Base):
