@@ -6,10 +6,9 @@ Generate figures for validation data
 
 import matplotlib.pyplot as plt
 
-
 def singleGO_validation_figure(r_x, r_y, n_x, n_y, s_x, s_y, rand_x, rand_y, go_term="GO:0000000", 
-		go_cat="NN", organism="Unknown", show=False, outfile=None):
-
+		go_cat="NN", organism="Unknown", outfile=None, show=False):
+	
 	xmax = max(R_x + N_x + S_x + rand_x)
 	ymax = max(R_y + N_y + S_y + rand_y)
 	xscale = int(xmax + (xmax * 0.01))
@@ -32,6 +31,7 @@ def singleGO_validation_figure(r_x, r_y, n_x, n_y, s_x, s_y, rand_x, rand_y, go_
 	if show:
 		plt.show()
 	plt.close()
+
 
 if __name__ == "__main__":
 
