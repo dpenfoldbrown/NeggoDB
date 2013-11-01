@@ -8,7 +8,8 @@
     
     {% if request %}
         
-        <p>Your request terms were not understood. Terms: </p>
+        <p>{{ message }}</p>
+        <h5>Request Fields:</h5>
         {% for t in request.values %}
             <blockquote><p>{{t}} : {{request.values[t]}}</p></blockquote>
         {% endfor %}
