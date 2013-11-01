@@ -117,6 +117,17 @@ class ValidationPlot(Base):
                  (self.p5_x, self.p5_y), (self.p6_x, self.p6_y), (self.p7_x, self.p7_y), (self.p8_x, self.p8_y)]
 
 
+def get_validation_points(validation_dbo, fill=-1):
+    """
+    Takes a ValidationPlot Database Object, returning a tuple of lists, form: (x_list, y_list). If
+    validation_dbo is None, returns a tuple of two lists of the appropriate length populated with
+    the value of fill parameter.    
+    """
+    if validation_dbo == None:
+        return ([fill]*8, [fill]*8)
+    return (validation_dbo.get_xlist(), validation_dbo.get_ylist())
+
+
 class Human9606(Base):
     """
     Table representing the negative examples of genes per GO term in Human 9606
