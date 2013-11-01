@@ -182,6 +182,9 @@ def _write_genes_to_file(algorithm_name, results_cursor, file_handle):
 
 
 # Routes
+
+#TODO: Write route for figure generation!
+
 @app.route('/data', methods=['POST'])
 def data_request():
     """
