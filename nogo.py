@@ -11,6 +11,7 @@ from flask import Flask, request, session, g, redirect, url_for, abort, render_t
 from flask.ext.sqlalchemy import SQLAlchemy
 
 from db.nogoDB import *
+from figures.validation import singleGO_validation_figure
 
 # Flask init
 app = Flask(__name__)
@@ -21,11 +22,13 @@ db = SQLAlchemy(app)
 
 # Config
 File_Location = "./static/files/generated/"
+Fig_Location = "./static/img/generated/"
 NoGO_Version = 1
 Algorithm_ID_Dict = {
     "Rocchio": 1,   
     "SNOB": 2,
-    "NETL": 3
+    "NETL": 3,
+    "Random": 4
 }
 Organism_DBC_Dict = {
     'Arabidopsis3702': Arabidopsis3702,
@@ -33,10 +36,79 @@ Organism_DBC_Dict = {
     'Mouse10090': Mouse10090,
     'Rice39947': Rice39947,
     'Worm6239': Worm6239,
-    'Yeast4932': Yeast4932,
+    'Yeast4932': Yeast4932
+}
+Organism_DBName_Dict = {
+    'Arabidopsis3702': 'arabidopsis',
+    'Human9606': 'human',
+    'Mouse10090': 'mouse',
+    'Rice39947': 'rice',
+    'Worm6239': 'worm',
+    'Yeast4932': 'yeast'
 }
 
 # Utility functions
+def generate_validation_plot(organism, branch, term):
+    """
+    Generates the validation plot for a given set of parameters via matplotlib, saves to file.
+    Returns a tuple ("message", Filename). If error, form is ("error message", None). If success,
+    form is ("success message", FilePath).
+    Note: all generated figures include all algorithms and the random baseline.
+    """
+
+    # ValidationPlot fields:
+    # id, organism, go_category, algorithm_id, version_id, go_id
+
+    # Get variables for DB query (ValidationPlot uses lowercase, no-tax ID organism names)
+    if organism not in Organism_DBName_Dict:
+        return ("Organism {0} not valid".format(organism), None)
+    val_organism = Organism_DBName_Dict[organism]
+
+    # Query DB for validation plot info for all algorithms and random baseline
+    rocchio_validation = _get_validation_data(val_organism, branch, term, NoGO_Version, "Rocchio")
+    netl_validation = _get_validation_data(val_organism, branch, term, NoGO_Version, "NETL")
+    snob_validation = _get_validation_data(val_organism, branch, term, NoGO_Version, "SNOB")
+    random_validation = _get_validation_data(val_organism, branch, term, NoGO_Version, "Random")
+
+    # Check results. If all Algorithms (not random baseline) are empty, return failure
+    if rocchio_validation == None and netl_validation == None and snob_validation == None:
+        return ("No validation information for given values (Check GO Term!)", None)
+
+    # Get data from validation objects, and call image generator
+    rocc_x, rocc_y = get_validation_points(rocchio_validation, fill=-1)
+    netl_x, netl_y = get_validation_points(netl_validation, fill=-1)
+    snob_x, snob_y = get_validation_points(snob_validation, fill=-1)
+    rand_x, rand_y = get_validation_points(random_validation, fill=-1)
+
+    # Create filename from parameters
+    #TODO: Create secure temporary filename for results in the File_Location dir (via python module
+    #TODO: secure file of whatever)
+    outfile = os.path.join(Fig_Location, "{0}_{1}_{2}_{3}.png".format(
+        organism, branch, term, datetime.now()))
+
+    try:
+        singleGO_validation_figure(rocc_x, rocc_y, netl_x, netl_y, snob_x, snob_y, rand_x, rand_y,
+            go_term=term, go_cat=branch, organism=organism, outfile=outfile, show=False)
+    except Except as e:
+        print "Error: creating figure failed with exception {0}".format(e)
+        return ("Server error: image creation failed", None)
+
+    return("Successfully created image file {0}".format(outfile), outfile)
+
+
+def _get_validation_data(organism, branch, term, version, algorithm_name):
+    """Queries the DB for validation plot information, returning DB query return"""
+    if algorithm_name not in Algorithm_ID_Dict:
+        print "Error: Algorithm {0} not recognized".format(algorithm_name)
+        return None
+    return db.session.query(ValidationPlot).filter_by(
+        go_id=term,
+        organism=organism,
+        go_category=branch,
+        version_id=version,
+        algorithm_id=Algorithm_ID_Dict[algorithm_name]).first()
+
+
 def generate_nogo_file(organism, branch, term, rocchio, netl, snob):
     """
     Queries NoGO DB for negative example entries for given org, branch, and term (per alg). Writes
@@ -46,10 +118,9 @@ def generate_nogo_file(organism, branch, term, rocchio, netl, snob):
     """
 
     # Set up variables for DB query
-    try:
-        organism_dbc = Organism_DBC_Dict[organism]
-    except KeyError as e:
+    if organism not in Organism_DBC_Dict:
         return ("Organism {0} not valid".format(organism), None)
+    organism_dbc = Organism_DBC_Dict[organism]
 
     # Query DB for data set for each algorithm (just get cursors, for now)
     rocchio_examples = None
@@ -83,7 +154,7 @@ def generate_nogo_file(organism, branch, term, rocchio, netl, snob):
     # Create filename from parameters
     #TODO: Create secure temporary filename for results in the File_Location dir (via python module
     #TODO: secure file of whatever)
-    outfile = os.path.join(File_Location, "{0}-{1}-{2}-{3}.txt".format(
+    outfile = os.path.join(File_Location, "{0}_{1}_{2}_{3}.txt".format(
         organism, branch, term, datetime.now()))
 
     with open(outfile) as handle:
