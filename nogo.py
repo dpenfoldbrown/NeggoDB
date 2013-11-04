@@ -7,8 +7,9 @@ NeggoDB (negative gene annotation database) Python+Flask-based web site
 
 import os
 from datetime import datetime
-from flask import Flask, request, session, g, redirect, url_for, abort, render_template, send_file
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask import Flask, request, session, g, redirect, url_for, abort, render_template
+from flask import send_file, jsonify
 
 from db.nogoDB import *
 from figures.validation import singleGO_validation_figure
@@ -55,9 +56,6 @@ def generate_validation_plot(organism, branch, term):
     form is ("success message", FilePath).
     Note: all generated figures include all algorithms and the random baseline.
     """
-
-    # ValidationPlot fields:
-    # id, organism, go_category, algorithm_id, version_id, go_id
 
     # Get variables for DB query (ValidationPlot uses lowercase, no-tax ID organism names)
     if organism not in Organism_DBName_Dict:
@@ -157,7 +155,7 @@ def generate_nogo_file(organism, branch, term, rocchio, netl, snob):
     outfile = os.path.join(File_Location, "{0}_{1}_{2}_{3}.txt".format(
         organism, branch, term, datetime.now()))
 
-    with open(outfile) as handle:
+    with open(outfile, 'w') as handle:
 
         handle.write("** NoGO negative gene examples: {0}, {1}, {2}\n".format(organism, term, 
             branch))
@@ -183,7 +181,40 @@ def _write_genes_to_file(algorithm_name, results_cursor, file_handle):
 
 # Routes
 
-#TODO: Write route for figure generation!
+@app.route('/figure', methods=['POST'])
+def figure_request():
+    """
+    Method to handle requests for figure creation. Request object (parameter from client) should
+    include: Organism, GO Category, and Go Term. All figures will contain data for all algorithms
+    and the random baseline.
+    Renders a bad request template on fatal error, otherwise returns a JSON object to client side:
+    {
+        "code": "ERROR"|"OK", 
+        "message":"<description of error or succes>", 
+        "file_href": "<href to file or null if error>"
+    }
+    """
+    # Check request and get values (or return errors when no required values)
+    if request.method != "POST":
+        return render_template('bad_request.html', request=request, 
+            message="Server Error: Figure generation request not POST")
+
+    if "Organism" not in request.form:
+        return jsonify(code="ERROR", message="No Organism selected", file_href=None)
+    if "Branch" not in request.form:
+        return jsonify(code="ERROR", message="No GO Branch selected", file_href=None)    
+    if "Term" not in request.form:
+        return jsonify(code="ERROR", message="No GO Term given", file_href=None)
+    organism = request.form["Organism"]
+    branch = request.form["Branch"]
+    term = request.form["Term"]
+
+    # Call figure generator with request values, return file or error
+    message, figure_file =  generate_validation_plot(organism, branch, term)
+    if figure_file == None:
+        return jsonify(code="ERROR", message=message, file_href=None)
+    return jsonify(code="OK", message=message, file_href=figure_file)
+
 
 @app.route('/data', methods=['POST'])
 def data_request():
@@ -194,7 +225,7 @@ def data_request():
     # Check request
     if request.method != "POST":
         return render_template('bad_request.html', request=request, 
-            message="Server Error: Request not POST")
+            message="Server Error: Data request not POST")
     
     # Get values from request
     if "Organism" not in request.form:
@@ -220,7 +251,7 @@ def data_request():
             message="Must select at least one Algorithm")
 
     # Call file-generator with request values
-    (file_message, results_file) = generate_nogo_file(organism, branch, term, rocchio, netl, snob)
+    file_message, results_file = generate_nogo_file(organism, branch, term, rocchio, netl, snob)
     if results_file == None:
         return render_template(
                 'bad_request.html', 
