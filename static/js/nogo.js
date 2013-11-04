@@ -6,6 +6,13 @@
 
  $(function() {
 
+    // Config variables
+    var FigureLocation = "static/img/pregenerated/";
+    var DefaultFigure = "static/img/pregenerated/sample01.png";
+    var LoadingImg = "static/img/loader.gif";
+    var ErrorImg = "static/img/error.png";
+
+
     // Get frontpage elements as jquery accessors, vars to reduce redundancy of hard coding
     var organism_accessor = $("#f_organism");
     var branch_accessor = $("#f_branch");
@@ -13,59 +20,101 @@
     var algorithms_accessor = $(".f_algorithm");
     var button_accessor = $("#f_download");
 
-    // Behavior on change of Organism select box (enable GO Branch select box)
+    var figure_accessor = $("#selection-fig");
+    var figure_link_accessor = $("#selection-fig-link");
+
+
+    // Behavior on change of Field (enable next field)
     organism_accessor.change(setBranchField);
-
-    // Behavior on change of GO Branch select box (enable GO Term input)
     branch_accessor.change(setTermField);
-
-    // Behavior on change of GO Term input box (enable Algorithm checkboxes)
     term_accessor.change(setAlgorithmsField);
-
-    // Behavior on change of Algorithm checkboxes (enable download button if disabled)
     algorithms_accessor.change(setButtonField);
 
 
-    function setBranchField(e) {
-        if (organism_accessor.val() == "") {
-            branch_accessor.attr("disabled", "disabled");
-            return;
+    function makeFigureHref(organism, branch) {
+        var figure_ref = FigureLocation;
+        
+        if (organism == "") {
+            return DefaultFigure;
+        } else {
+            figure_ref += organism;
         }
-        branch_accessor.removeAttr("disabled");
+        if (branch != "") {
+            figure_ref += "_" + branch;
+        }
+        figure_ref += ".png"
+        return figure_ref
+    }
 
-        //TODO: Change image to loader, Check value, Change image to pre-gen chart
-        //TODO: (build image href file string by getting field vals)
+    function setFigureSource(figure_ref) {
+        figure_accessor.attr("src", figure_ref);
+        figure_link_accessor.attr("href", figure_ref);
+    }
+
+    function getGoFieldValues() {
+        return {
+            "organism": organism_accessor.val(),
+            "branch": branch_accessor.val(),
+            "term": term_accessor.val()
+        };   
+    }
+
+    function getAlgorithmValues() {
+        return {
+            "rocchio": $("#alg_rocc").is(':checked'),
+            "netl": $("#alg_netl").is(':checked'),
+            "snob": $("#alg_snob").is(':checked')
+        };
+    }
+
+    function setBranchField(e) {
+        var figure_ref;
+        var goFields = getGoFieldValues();
+        if (goFields["organism"] == "") {
+            branch_accessor.attr("disabled", "disabled");
+        }
+        else {
+            branch_accessor.removeAttr("disabled");
+            figure_ref = makeFigureHref(goFields["organism"], goFields["branch"]);
+            setFigureSource(figure_ref);
+        }
     }
     
     function setTermField(e) {
-        if (branch_accessor.val() == "") {
+        var figure_ref;
+        var goFields = getGoFieldValues();
+        if (goFields["branch"] == "") {
             term_accessor.attr("disabled", "disabled");
-            return;
+        } else {
+            term_accessor.removeAttr("disabled");
+            figure_ref = makeFigureHref(goFields["organism"], goFields["branch"]);
+            setFigureSource(figure_ref);
         }
-        term_accessor.removeAttr("disabled");
-
-        //TODO: Change image to loader, Check value, Change image to pre-gen chart
-        //TODO: (build image href file string by getting field vals)
     }
     
     function setAlgorithmsField(e) {
-        if (term_accessor.val() == "") {
-            algorithms_accessor.attr("disabled", "disabled");
-            return;
-        }
-        algorithms_accessor.removeAttr("disabled");
+        var figure_ref;
+        var goFields = getGoFieldValues();
 
-        //TODO: Change image to loader, get Org, Branch, and Term values, and send AJAX request to
-        //TODO: server with those fields. On success response, change image to returned file href.
+        if (goFields["term"] == "") {
+            algorithms_accessor.attr("disabled", "disabled");
+        }
+        else {
+            algorithms_accessor.removeAttr("disabled");
+            setFigureSource(LoadingImg);
+        }
+
+        //TODO: Send AJAX request to server with values. On success response, change image to returned file href.
         //TODO: on error response, switch img back to original frontpage and display error message.
+
+        // figure_ref = AJAX CALL RETURN, check if success
+        // setFigureSource(figure_ref);
     }
     
     function setButtonField(e) {
-        var rocc_selected = $("#alg_rocc").is(':checked');
-        var netl_selected = $("#alg_netl").is(':checked');
-        var snob_selected = $("#alg_snob").is(':checked');
+        algorithms = getAlgorithmValues();
 
-        if (rocc_selected || netl_selected || snob_selected) {
+        if (algorithms["rocchio"] || algorithms["netl"] || algorithms["snob"]) {
             button_accessor.removeAttr("disabled");
         } else {
             button_accessor.attr("disabled", "disabled");
