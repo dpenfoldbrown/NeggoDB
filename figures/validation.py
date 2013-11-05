@@ -14,7 +14,7 @@ def singleGO_validation_figure(r_x, r_y, n_x, n_y, s_x, s_y, rand_x, rand_y, go_
 	xscale = int(xmax + (xmax * 0.01))
 	yscale = int(ymax + (ymax * 0.20))
 
-	plt.title("Sample Accuracy: {0} ({1}), {2}".format(go_term, go_cat, organism))
+	plt.title("Sample Accuracy: {0} {1} {2}".format(organism, go_cat, go_term))
 	plt.xlabel("Number of selected negative examples")
 	plt.ylabel("Number of erroneous negative examples")
 
