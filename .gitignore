@@ -2,7 +2,9 @@
 nogo.web.log
 local_test
 static/files/generated/*
+static/files/pregenerated/*
 static/img/generated/*
+static/img/pregenerated/*
 
 # General
 *.swp
