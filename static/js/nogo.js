@@ -12,7 +12,6 @@
     var LoadingImg = "static/img/loader.gif";
     var ErrorImg = "static/img/error.png";
 
-
     // Get frontpage elements as jquery accessors, vars to reduce redundancy of hard coding
     var organism_accessor = $("#f_organism");
     var branch_accessor = $("#f_branch");
@@ -22,6 +21,35 @@
 
     var figure_accessor = $("#selection-fig");
     var figure_link_accessor = $("#selection-fig-link");
+    var form_accessor = $("#download-form");
+
+    // Setter functions
+    function setDownloadMessage(message) {
+       $("#download-message").text(message); 
+    }
+    function setFigureMessage(message) {
+        $("#figure-message").text(message);
+    }
+    function setFigureSource(figure_ref) {
+        figure_accessor.attr("src", figure_ref);
+        figure_link_accessor.attr("href", figure_ref);
+    }
+
+    // Getter functions
+    function getGoFieldValues() {
+        return {
+            "organism": organism_accessor.val(),
+            "branch": branch_accessor.val(),
+            "term": term_accessor.val()
+        };   
+    }
+    function getAlgorithmValues() {
+        return {
+            "rocchio": $("#alg_rocc").is(':checked'),
+            "netl": $("#alg_netl").is(':checked'),
+            "snob": $("#alg_snob").is(':checked')
+        };
+    }
 
 
     // Behavior on change of Field (enable next field)
@@ -30,7 +58,12 @@
     term_accessor.change(setAlgorithmsField);
     algorithms_accessor.change(setButtonField);
 
+    // Behavior on form submit (don't prevent default)
+    form_accessor.submit(function (e) {
+        setDownloadMessage("Please be patient - this may take a minute (fewer algorithm selections reduces time)");
+    });
 
+    // Utility functions
     function makeFigureHref(organism, branch) {
         var figure_ref = FigureLocation;
         
@@ -46,27 +79,59 @@
         return figure_ref
     }
 
-    function setFigureSource(figure_ref) {
-        figure_accessor.attr("src", figure_ref);
-        figure_link_accessor.attr("href", figure_ref);
+    function updateFigure(organism, branch, term) {
+        var figure_ref = FigureLocation;
+        setFigureMessage("");
+
+        if (organism == "") {
+            setFigureSource(DefaultFigure);
+        }
+        else if (branch == "") {
+            figure_ref += organism + ".png";
+            setFigureSource(figure_ref);
+            return;
+        }
+        else if (term == "") {
+            figure_ref += organism + "_" + branch + ".png";
+            setFigureSource(figure_ref);
+            return;
+        }
+        else {
+            // Request image creation
+            setFigureSource(LoadingImg);
+            setFigureMessage("");
+            
+            // Send AJAX request to server with form values, setting images as return indicates
+            var jqxhr = $.post(
+                "/figure",
+                {
+                    "Organism": organism,
+                    "Branch": branch,
+                    "Term": term
+                },
+                function(data) {
+                    // Return data format: { "code": ..., "message": ..., "file_href": ...}
+                    console.log(data);
+
+                    if (data["code"] == "OK") {
+                        // On success response, change image to returned file href
+                        setFigureSource(data["file_href"]);
+                    }
+                    else {
+                        // On error response, switch img back to original frontpage and display 
+                        // error message.
+                        setFigureSource(DefaultFigure);
+                        setFigureMessage(data["message"]);
+                    }
+                }).fail( function() {
+                    // On AJAX POST failure, displasy error image and message
+                    setFigureSource(ErrorImg);
+                    setFigureMessage("Error communicating with server. No image to be set :-(");
+                });
+        }
     }
 
-    function getGoFieldValues() {
-        return {
-            "organism": organism_accessor.val(),
-            "branch": branch_accessor.val(),
-            "term": term_accessor.val()
-        };   
-    }
-
-    function getAlgorithmValues() {
-        return {
-            "rocchio": $("#alg_rocc").is(':checked'),
-            "netl": $("#alg_netl").is(':checked'),
-            "snob": $("#alg_snob").is(':checked')
-        };
-    }
-
+    // Field-set handlers
     function setBranchField(e) {
         var figure_ref;
         var goFields = getGoFieldValues();
@@ -75,9 +140,8 @@
         }
         else {
             branch_accessor.removeAttr("disabled");
-            figure_ref = makeFigureHref(goFields["organism"], goFields["branch"]);
-            setFigureSource(figure_ref);
         }
+        updateFigure(goFields["organism"], goFields["branch"], goFields["term"]);
     }
     
     function setTermField(e) {
@@ -87,33 +151,24 @@
             term_accessor.attr("disabled", "disabled");
         } else {
             term_accessor.removeAttr("disabled");
-            figure_ref = makeFigureHref(goFields["organism"], goFields["branch"]);
-            setFigureSource(figure_ref);
         }
+        updateFigure(goFields["organism"], goFields["branch"], goFields["term"]);
     }
     
     function setAlgorithmsField(e) {
         var figure_ref;
         var goFields = getGoFieldValues();
-
         if (goFields["term"] == "") {
             algorithms_accessor.attr("disabled", "disabled");
         }
         else {
             algorithms_accessor.removeAttr("disabled");
-            setFigureSource(LoadingImg);
+            updateFigure(goFields["organism"], goFields["branch"], goFields["term"]);
         }
-
-        //TODO: Send AJAX request to server with values. On success response, change image to returned file href.
-        //TODO: on error response, switch img back to original frontpage and display error message.
-
-        // figure_ref = AJAX CALL RETURN, check if success
-        // setFigureSource(figure_ref);
     }
     
     function setButtonField(e) {
         algorithms = getAlgorithmValues();
-
         if (algorithms["rocchio"] || algorithms["netl"] || algorithms["snob"]) {
             button_accessor.removeAttr("disabled");
         } else {
@@ -121,43 +176,9 @@
         }
     }
 
-    //TODO: On Form submit (capture form submit - better than click event on button), show loader 
-    //TODO: and "please wait message" (page will reload on server response, but that may take a
-    //TODO: while due to file gen.)
-
-
-    // // Behavior on Download button click
-    // function requestData(e) {
-    //     // Get all values
-    //     var org = organism_accessor.val();
-    //     var branch = branch_accessor.val();
-    //     var term = term_accessor.val();
-    //
-    //     // Make an AJAX Post call to server with input field values
-    //     var jqxhr = $.post("/NoGO/data",
-    //         {
-    //             "organism": org,
-    //             "branch": branch,
-    //             "go_term": term,
-    //             "rocchio": rocc,
-    //             "netl": netl,
-    //             "snob": snob
-    //         },
-    //         function (data) {
-    //             console.log("jQuery Post call success. Data: ");
-    //             console.log(data);
-    //         }).done( function() {
-    //             console.log("jQuery Post done");
-    //         }).fail( function() {
-    //             console.log("jQuery Post failed");
-    //         }).always( function() {
-    //             console.log("jQuery Post always");
-    //         });
-    // }
-    // button_accessor.click(requestData)
-
-
-    // On page load (here), call all functions to make sure of correct enable/disable scheme
+    // On page load (here), call all functions to make sure of correct enable/disable and figure scheme
+    setDownloadMessage("");
+    setFigureMessage("");
     setBranchField();
     setTermField();
     setAlgorithmsField();
