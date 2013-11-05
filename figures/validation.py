@@ -9,10 +9,10 @@ import matplotlib.pyplot as plt
 def singleGO_validation_figure(r_x, r_y, n_x, n_y, s_x, s_y, rand_x, rand_y, go_term="GO:0000000", 
 		go_cat="NN", organism="Unknown", outfile=None, show=False):
 	
-	xmax = max(R_x + N_x + S_x + rand_x)
-	ymax = max(R_y + N_y + S_y + rand_y)
+	xmax = max(r_x + n_x + s_x + rand_x)
+	ymax = max(r_y + n_y + s_y + rand_y)
 	xscale = int(xmax + (xmax * 0.01))
-	yscale = int(ymax + (ymax * 0.4))
+	yscale = int(ymax + (ymax * 0.20))
 
 	plt.title("Sample Accuracy: {0} ({1}), {2}".format(go_term, go_cat, organism))
 	plt.xlabel("Number of selected negative examples")
@@ -23,7 +23,7 @@ def singleGO_validation_figure(r_x, r_y, n_x, n_y, s_x, s_y, rand_x, rand_y, go_
 	plt.plot(s_x, s_y, 'y-', linewidth=2.0, label="SNOB")
 	plt.plot(rand_x, rand_y, 'b-.', linewidth=2.0, label="Random")
 
-	plt.axis([0, xscale, 0, yscale])
+	plt.axis([0, xscale, -1, yscale])
 	plt.legend(loc='upper left')
 
 	if outfile:
