@@ -1,4 +1,5 @@
 # App-specific
+nogo.web.log
 local_test
 static/files/generated/*
 static/img/generated/*
