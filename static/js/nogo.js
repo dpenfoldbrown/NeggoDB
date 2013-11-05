@@ -64,21 +64,6 @@
     });
 
     // Utility functions
-    function makeFigureHref(organism, branch) {
-        var figure_ref = FigureLocation;
-        
-        if (organism == "") {
-            return DefaultFigure;
-        } else {
-            figure_ref += organism;
-        }
-        if (branch != "") {
-            figure_ref += "_" + branch;
-        }
-        figure_ref += ".png"
-        return figure_ref
-    }
-
     function updateFigure(organism, branch, term) {
         var figure_ref = FigureLocation;
         setFigureMessage("");
@@ -120,7 +105,7 @@
                     else {
                         // On error response, switch img back to original frontpage and display 
                         // error message.
-                        setFigureSource(DefaultFigure);
+                        setFigureSource(ErrorImg);
                         setFigureMessage(data["message"]);
                     }
                 }).fail( function() {
