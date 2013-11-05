@@ -1,5 +1,9 @@
+# App-specific
 local_test
+static/files/generated/*
+static/img/generated/*
 
+# General
 *.swp
 
 *.py[cod]
