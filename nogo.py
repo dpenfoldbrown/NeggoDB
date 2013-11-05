@@ -70,7 +70,8 @@ def generate_validation_plot(organism, branch, term):
 
     # Check results. If all Algorithms (not random baseline) are empty, return failure
     if rocchio_validation == None and netl_validation == None and snob_validation == None:
-        return ("No validation information for given values (Check GO Term!)", None)
+        return ("No validation data for given values - Check GO Term! Displaying Default.",
+            None)
 
     # Get data from validation objects, and call image generator
     rocc_x, rocc_y = get_validation_points(rocchio_validation, fill=-1)
@@ -82,14 +83,14 @@ def generate_validation_plot(organism, branch, term):
     #TODO: Create secure temporary filename for results in the File_Location dir (via python module
     #TODO: secure file of whatever)
     outfile = os.path.join(Fig_Location, "{0}_{1}_{2}_{3}.png".format(
-        organism, branch, term, datetime.now()))
+        organism, branch, term, datetime.now().isoformat()))
 
     try:
         singleGO_validation_figure(rocc_x, rocc_y, netl_x, netl_y, snob_x, snob_y, rand_x, rand_y,
             go_term=term, go_cat=branch, organism=organism, outfile=outfile, show=False)
-    except Except as e:
+    except Exception as e:
         print "Error: creating figure failed with exception {0}".format(e)
-        return ("Server error: image creation failed", None)
+        return ("Server error: image creation failed. Displaying default.", None)
 
     return("Successfully created image file {0}".format(outfile), outfile)
 
@@ -121,39 +122,40 @@ def generate_nogo_file(organism, branch, term, rocchio, netl, snob):
     organism_dbc = Organism_DBC_Dict[organism]
 
     # Query DB for data set for each algorithm (just get cursors, for now)
-    rocchio_examples = None
-    netl_examples = None
-    snob_examples = None
+    rocchio_count = 0
+    netl_count = 0
+    snob_count = 0
     if rocchio:
         rocchio_examples = db.session.query(organism_dbc).filter_by(
                 go_id=term,
                 go_category=branch,
                 version_id=NoGO_Version,
                 algorithm_id=Algorithm_ID_Dict["Rocchio"])
+        rocchio_count = rocchio_examples.count()
     if netl:
         netl_examples = db.session.query(organism_dbc).filter_by(
                 go_id=term,
                 go_category=branch,
                 version_id=NoGO_Version,
                 algorithm_id=Algorithm_ID_Dict["NETL"])
+        netl_count = netl_examples.count()
     if snob:
         snob_examples = db.session.query(organism_dbc).filter_by(
                 go_id=term,
                 go_category=branch, 
                 version_id=NoGO_Version,
                 algorithm_id=Algorithm_ID_Dict["SNOB"])
+        snob_count = snob_examples.count()
 
     # Check query results. If all empty, return None with error message "No results"
-    #TODO: May have to/want to do this with counts, not existence (if no results, what is query 
-    #TODO: return value with no all() or first()?)
-    if rocchio_examples == None and netl_examples == None and snob_examples == None:
+    if rocchio_count < 1 and netl_count < 1 and snob_count < 1:
         return ("No results returned for given values (check GO Term!)", None)
 
     # Create filename from parameters
     #TODO: Create secure temporary filename for results in the File_Location dir (via python module
     #TODO: secure file of whatever)
     outfile = os.path.join(File_Location, "{0}_{1}_{2}_{3}.txt".format(
-        organism, branch, term, datetime.now()))
+        organism, branch, term, datetime.now().isoformat()))
 
     with open(outfile, 'w') as handle:
 
@@ -161,19 +163,25 @@ def generate_nogo_file(organism, branch, term, rocchio, netl, snob):
             branch))
         handle.write("** <Algorithm>:  <1stMostNegGene>  <2ndMostNegGene>  <3rdMostNegGene>...\n")
 
-        if rocchio_examples:
-            _write_genes_to_file("Rocchio", rocchio_examples, handle)
+        if rocchio:
+            _write_genes_to_file("Rocchio", rocchio_examples, rocchio_count, handle)
         if netl:
-            _write_genes_to_file("NETL", netl_examples, handle)
+            _write_genes_to_file("NETL", netl_examples, netl_count, handle)
         if snob:
-            _write_genes_to_file("SNOB", snob_examples, handle)
+            _write_genes_to_file("SNOB", snob_examples, snob_count, handle)
 
     return ("Successfuly wrote outfile {0}".format(outfile), outfile)
 
 
-def _write_genes_to_file(algorithm_name, results_cursor, file_handle):
-    """Write gene_symbol from every item in results cursor to a tab-delimed line in file_handle"""
+def _write_genes_to_file(algorithm_name, results_cursor, results_count, file_handle):
+    """
+    Write gene_symbol from every item in results cursor to a tab-delimed line in file_handle. Count
+    included to avoid re-querying DB when count < 1 (in which case, write empty line)
+    """
     file_handle.write("{0}:".format(algorithm_name))
+    if results_count < 1:
+        file_handle.write("\n")
+        return
     for neg_eg in results_cursor.all():
         file_handle.write("\t{0}".format(neg_eg.gene_symbol))
     file_handle.write("\n")
@@ -261,7 +269,7 @@ def data_request():
     try:
         #TODO: Re-render the home template, or render a "Download will begin shortly (with loading
         #TODO: icon) page?"
-        send_file(results_file, mimetype="application/text", as_attachment=True)
+        return send_file(results_file, mimetype="application/text", as_attachment=True)
     except Exception as e:
         print "Exception when attempting send_file: {0}".format(e)
         return render_template('bad_request.html', request=request, message="Failed to send file")
