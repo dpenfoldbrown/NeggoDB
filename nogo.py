@@ -70,7 +70,7 @@ def generate_validation_plot(organism, branch, term):
 
     # Check results. If all Algorithms (not random baseline) are empty, return failure
     if rocchio_validation == None and netl_validation == None and snob_validation == None:
-        return ("No validation data for given values - Check GO Term! Displaying Default.",
+        return ("No validation data for given values - Check GO Term!",
             None)
 
     # Get data from validation objects, and call image generator
@@ -90,7 +90,7 @@ def generate_validation_plot(organism, branch, term):
             go_term=term, go_cat=branch, organism=organism, outfile=outfile, show=False)
     except Exception as e:
         print "Error: creating figure failed with exception {0}".format(e)
-        return ("Server error: image creation failed. Displaying default.", None)
+        return ("Server error: image creation failed.", None)
 
     return("Successfully created image file {0}".format(outfile), outfile)
 
@@ -292,7 +292,7 @@ def about():
 
 if __name__ == "__main__":
     #WARNING: Do not run in debug mode publicly (allows for code execution)
-    app.debug = True
+    app.debug = False
 
     #WARNING: Do not share the secret key (obviously). Generate: os.urandom(24)
     app.secret_key = '\xbf\x18\xbc\xb2O#\xf7!{\t\xd3$i\xd7$_w\xeb\x01}V\xb1{p'
@@ -310,5 +310,10 @@ if __name__ == "__main__":
         file_handler.setLevel(logging.DEBUG)
         app.logger.addHandler(file_handler)
 
-    # app.run(host='0.0.0.0')
-    app.run()
+    #app.run()
+    app.run(host='0.0.0.0', port=8080, threaded=True)
+
+
+
+
+
