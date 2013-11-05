@@ -26,6 +26,15 @@ Algorithms = ["Rocchio", "Ne", "SNOB", "Random"]
 file_dir = "/Users/dpb/data/nogo/validation"
 file_prefix = "Average_Validation"
 
+rocc_sum_x = [0]*8
+rocc_sum_y = [0]*8
+netl_sum_x = [0]*8
+netl_sum_y = [0]*8
+snob_sum_x = [0]*8
+snob_sum_y = [0]*8
+rand_sum_x = [0]*8
+rand_sum_y = [0]*8
+
 # Utility functions
 def parse_validation_file(filename):
     """
@@ -65,6 +74,16 @@ for organism in Organisms:
     singleGO_validation_figure(rocc_x, rocc_y, netl_x, netl_y, snob_x, snob_y, rand_x, rand_y, 
         go_term="", go_cat="", organism=Organisms[organism], outfile=fig_file, show=False)
 
+    # Add values to sum lists (for computing average over all)
+    rocc_sum_x = map(sum, zip(rocc_sum_x, rocc_x))
+    rocc_sum_y = map(sum, zip(rocc_sum_y, rocc_y))
+    netl_sum_x = map(sum, zip(netl_sum_x, netl_x))
+    netl_sum_y = map(sum, zip(netl_sum_y, netl_y))
+    snob_sum_x = map(sum, zip(snob_sum_x, snob_x))
+    snob_sum_y = map(sum, zip(snob_sum_y, snob_y))
+    rand_sum_x = map(sum, zip(rand_sum_x, rand_x))
+    rand_sum_y = map(sum, zip(rand_sum_y, rand_y))
+
     # Loop through Categories, generate plots for each
     for cat in Categories:
 
@@ -83,6 +102,22 @@ for organism in Organisms:
             go_term="", go_cat=cat, organism=Organisms[organism], outfile=fig_file, show=False)
 
     print "Completed plots for {0}".format(organism)
+
+# Generate overall average plot
+num_organisms = len(Organisms)
+rocc_x = [e/num_organisms for e in rocc_sum_x]
+rocc_y = [e/num_organisms for e in rocc_sum_y]
+netl_x = [e/num_organisms for e in netl_sum_x]
+netl_y = [e/num_organisms for e in netl_sum_y]
+snob_x = [e/num_organisms for e in snob_sum_x]
+snob_y = [e/num_organisms for e in snob_sum_y]
+rand_x = [e/num_organisms for e in rand_sum_x]
+rand_y = [e/num_organisms for e in rand_sum_y]
+
+fig_file = "AllOrganismAverage.png"
+singleGO_validation_figure(rocc_x, rocc_y, netl_x, netl_y, snob_x, snob_y, rand_x, rand_y,
+            go_term="", go_cat="", organism="All Organisms Average", outfile=fig_file, show=False)
+
 print "Generating plots complete"
 
 

@@ -8,7 +8,7 @@
 
     // Config variables
     var FigureLocation = "static/img/pregenerated/";
-    var DefaultFigure = "static/img/pregenerated/sample01.png";
+    var DefaultFigure = "static/img/pregenerated/AllOrganismAverage.png";
     var LoadingImg = "static/img/loader.gif";
     var ErrorImg = "static/img/error.png";
 
