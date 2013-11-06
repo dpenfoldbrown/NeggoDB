@@ -26,14 +26,6 @@ Algorithms = ["Rocchio", "Ne", "SNOB", "Random"]
 file_dir = "/Users/dpb/data/nogo/validation"
 file_prefix = "Average_Validation"
 
-rocc_sum_x = [0]*8
-rocc_sum_y = [0]*8
-netl_sum_x = [0]*8
-netl_sum_y = [0]*8
-snob_sum_x = [0]*8
-snob_sum_y = [0]*8
-rand_sum_x = [0]*8
-rand_sum_y = [0]*8
 
 # Utility functions
 def parse_validation_file(filename):
@@ -57,7 +49,23 @@ def parse_validation_file(filename):
     assert len(y_vals) == 8
     return (x_vals, y_vals)
 
-# Main functionality
+# Generate average plot across all organisms and categories
+rocc_file = path.join(file_dir, "{0}_{1}.txt".format(file_prefix, "Rocchio"))
+netl_file = path.join(file_dir, "{0}_{1}.txt".format(file_prefix, "Ne"))
+snob_file = path.join(file_dir, "{0}_{1}.txt".format(file_prefix, "SNOB"))
+rand_file = path.join(file_dir, "{0}_{1}.txt".format(file_prefix, "Random"))
+
+rocc_x, rocc_y = parse_validation_file(rocc_file)
+netl_x, netl_y = parse_validation_file(netl_file)
+snob_x, snob_y = parse_validation_file(snob_file)
+rand_x, rand_y = parse_validation_file(rand_file)
+
+fig_file = "AllOrganismAverage.png"
+singleGO_validation_figure(rocc_x, rocc_y, netl_x, netl_y, snob_x, snob_y, rand_x, rand_y, 
+    go_term="", go_cat="", organism="Average Accuracy", outfile=fig_file, show=False)
+print "Completed All Average plot: {0}".format(fig_file)
+
+# Generate plots for all organisms and categories
 for organism in Organisms:
     # Generate organism plot and save
     rocc_file = path.join(file_dir, "{0}_{1}_{2}.txt".format(file_prefix, "Rocchio", organism))
@@ -73,16 +81,6 @@ for organism in Organisms:
     fig_file = "{0}.png".format(Organisms[organism])
     singleGO_validation_figure(rocc_x, rocc_y, netl_x, netl_y, snob_x, snob_y, rand_x, rand_y, 
         go_term="", go_cat="", organism=Organisms[organism], outfile=fig_file, show=False)
-
-    # Add values to sum lists (for computing average over all)
-    rocc_sum_x = map(sum, zip(rocc_sum_x, rocc_x))
-    rocc_sum_y = map(sum, zip(rocc_sum_y, rocc_y))
-    netl_sum_x = map(sum, zip(netl_sum_x, netl_x))
-    netl_sum_y = map(sum, zip(netl_sum_y, netl_y))
-    snob_sum_x = map(sum, zip(snob_sum_x, snob_x))
-    snob_sum_y = map(sum, zip(snob_sum_y, snob_y))
-    rand_sum_x = map(sum, zip(rand_sum_x, rand_x))
-    rand_sum_y = map(sum, zip(rand_sum_y, rand_y))
 
     # Loop through Categories, generate plots for each
     for cat in Categories:
@@ -102,22 +100,6 @@ for organism in Organisms:
             go_term="", go_cat=cat, organism=Organisms[organism], outfile=fig_file, show=False)
 
     print "Completed plots for {0}".format(organism)
-
-# Generate overall average plot
-num_organisms = len(Organisms)
-rocc_x = [e/num_organisms for e in rocc_sum_x]
-rocc_y = [e/num_organisms for e in rocc_sum_y]
-netl_x = [e/num_organisms for e in netl_sum_x]
-netl_y = [e/num_organisms for e in netl_sum_y]
-snob_x = [e/num_organisms for e in snob_sum_x]
-snob_y = [e/num_organisms for e in snob_sum_y]
-rand_x = [e/num_organisms for e in rand_sum_x]
-rand_y = [e/num_organisms for e in rand_sum_y]
-
-fig_file = "AllOrganismAverage.png"
-singleGO_validation_figure(rocc_x, rocc_y, netl_x, netl_y, snob_x, snob_y, rand_x, rand_y,
-            go_term="", go_cat="", organism="All Organisms Average", outfile=fig_file, show=False)
-
 print "Generating plots complete"
 
 
