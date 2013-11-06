@@ -11,6 +11,7 @@
     var DefaultFigure = "static/img/pregenerated/AllOrganismAverage.png";
     var LoadingImg = "static/img/loader.gif";
     var ErrorImg = "static/img/error.png";
+    var FigureCaption = "This plot depicts the number of incorrectly predicted negative examples as a function of the number of negative examples chosen. A lower value indicates an algorithm with better performance, with the dashed blue line serving as a reference (the number of incorrectly predicted negative examples if negative examples were selected at random)";
 
     // Get frontpage elements as jquery accessors, vars to reduce redundancy of hard coding
     var organism_accessor = $("#f_organism");
@@ -66,7 +67,6 @@
     // Utility functions
     function updateFigure(organism, branch, term) {
         var figure_ref = FigureLocation;
-        setFigureMessage("");
 
         if (organism == "") {
             setFigureSource(DefaultFigure);
@@ -84,7 +84,6 @@
         else {
             // Request image creation
             setFigureSource(LoadingImg);
-            setFigureMessage("");
             
             // Send AJAX request to server with form values, setting images as return indicates
             var jqxhr = $.post(
@@ -163,7 +162,7 @@
 
     // On page load (here), call all functions to make sure of correct enable/disable and figure scheme
     setDownloadMessage("");
-    setFigureMessage("");
+    setFigureMessage(FigureCaption);
     setBranchField();
     setTermField();
     setAlgorithmsField();

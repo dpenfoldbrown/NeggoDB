@@ -70,8 +70,8 @@ def generate_validation_plot(organism, branch, term):
 
     # Check results. If all Algorithms (not random baseline) are empty, return failure
     if rocchio_validation == None and netl_validation == None and snob_validation == None:
-        return ("No validation data for given values - Check GO Term!",
-            None)
+        return ("No accuracy data is available for this GO term. You may still download" 
+            + " negative example predictions", None)
 
     # Get data from validation objects, and call image generator
     rocc_x, rocc_y = get_validation_points(rocchio_validation, fill=-1)
