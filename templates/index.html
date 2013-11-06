@@ -6,6 +6,14 @@
         <p>A resource for negative examples of <a target="_blank" href="http://www.geneontology.org/">GO</a> function across the genes of multiple organisms</p>
     </div>
 
+     <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <p>Negative examples are predictions of genes that do NOT carry out a function described by a Gene Ontology term. These negative predictions stem from observations indicating that proteins representing the gene do not perform the term's function, are not part of the process indicated by the term, or are not localized as the term defines.</p>
+        </div>
+    </div>
+
+    <br />
+
     <div class="row">
         <div class="col-md-6">
             <div class="column-header"><p>Select the data you would like to download:</p></div>
@@ -43,12 +51,7 @@
 
                 <div class="form-group">
                     <label for="f_goterm" class="col-lg-3">GO Term</label>
-                    <div class="col-lg-9">
-                        <!-- -->
-                        <!-- TODO: Combo box with autocomplete on all GO terms? Nah. If box content were id:name pair, combobox search would be cool... -->
-                        <!-- TODO: Check entry (on focusout) for validity - must have a list of all terms -->
-                        <!-- TODO: '-> Store a list of all terms in DB (GO id, id, name) -->
-                        <!-- -->
+                    <div class="col-lg-9"> 
                         <input disabled id="f_goterm" name="Term" type="text" class="form-control input-sm" placeholder="Enter a GO Term..." />
                     </div>
                 </div>
