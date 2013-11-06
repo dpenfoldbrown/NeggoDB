@@ -11,7 +11,16 @@ Static file format
 The static files available for download on the 'Download' page (NoGO/downloads) have the following
 format:
 
-#TODO
+Each data file corresponds to a combination of a particular organism, branch of GO, and algorithm 
+used to predict the negative examples. Files are tab-delimited, and organized by row, with each row
+corresponding to a GO term. 
+
+The first column contains the GO term ID, with each subsequent column being the gene name of a 
+predicted negative example. Genes are ordered from most to least likely to be a negative example
+(that is, the 2nd column holds the likeliest negative example for the GO term). In order to keep 
+all rows the same length, each is filled out with "NONE" entries, once there are no more predicted 
+negative examples.
+
 
 Automatically generated file format
 ===================================
