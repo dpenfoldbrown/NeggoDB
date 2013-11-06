@@ -67,18 +67,23 @@
     // Utility functions
     function updateFigure(organism, branch, term) {
         var figure_ref = FigureLocation;
+        setFigureMessage("");
 
         if (organism == "") {
             setFigureSource(DefaultFigure);
+            setFigureMessage(FigureCaption);
+            return;
         }
         else if (branch == "") {
             figure_ref += organism + ".png";
             setFigureSource(figure_ref);
+            setFigureMessage(FigureCaption);
             return;
         }
         else if (term == "") {
             figure_ref += organism + "_" + branch + ".png";
             setFigureSource(figure_ref);
+            setFigureMessage(FigureCaption);
             return;
         }
         else {
@@ -100,6 +105,7 @@
                     if (data["code"] == "OK") {
                         // On success response, change image to returned file href
                         setFigureSource(data["file_href"]);
+                        setFigureMessage(FigureCaption);
                     }
                     else {
                         // On error response, switch img back to original frontpage and display 
