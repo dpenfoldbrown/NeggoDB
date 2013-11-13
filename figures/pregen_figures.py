@@ -23,7 +23,7 @@ Organisms = {
 Categories = ["BP", "CC", "MF"]
 Algorithms = ["Rocchio", "Ne", "SNOB", "Random"]
 
-file_dir = "/Users/dpb/data/nogo/validation"
+file_dir = "/home/dpb/data/nogo/validation"
 file_prefix = "Average_Validation"
 
 
