@@ -1,14 +1,24 @@
 {% extends "layout.html" %}
 {% block body %}
-    
-    <div class="jumbotron">
+	<div class="jumbotron">
         <h3>Welcome to the NoGO Database</h3>
         <p>A resource for negative examples of <a target="_blank" href="http://www.geneontology.org/">GO</a> function across the genes of multiple organisms</p>
     </div>
 
-     <div class="row">
+    <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <p>Negative examples are predictions of genes that do <span class="note">NOT</span> carry out a function described by a Gene Ontology term. These negative predictions stem from observations indicating that proteins representing the gene do not perform the term's function, are not part of the process indicated by the term, or are not localized as the term defines.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="column-header">The Paper</div>
+            <h4>Abstract</h4>
+            <p>Negative examples: genes that are known not to carry out a given protein function, are rarely recorded in genome and proteome annotation databases, such as the Gene Ontology database. Negative examples are required, however, to do accurate protein function prediction. Unfortunately, most protein function prediction efforts have relied on a variety of heuristics for the choice of negative examples. Determining the accuracy of such methods is itself a non-trivial task, as the Open World Assumption as applied to gene annotations rules out many traditional validation metrics. We present a rigorous comparison of these heuristics, utilizing a temporal holdout, and a novel evaluation strategy for negative examples.</p> 
+            <p>We add to this comparison several algorithms adapted from Positive-Unlabeled learning scenarios in text-classification, which are the current state of the art methods for generating negative examples in low-annotation contexts. Lastly, we present two novel algorithms of our own construction, one based on empirical conditional probability, and the other using topic modeling applied to genes and annotations. We demonstrate that our algorithms achieve significantly fewer incorrect negative example predictions than the current state of the art, using multiple benchmarks covering multiple organisms with complete genomes. Our methods may be applied to generate negative examples for any type of method that deals with protein function, and to this end we provide a database of negative examples in several well-studied organisms, for general use.</p>
+            <h4>Submission</h4>
+            <p><span class="note">Coming soon.</span></p>
         </div>
     </div>
 
@@ -16,80 +26,31 @@
 
     <div class="row">
         <div class="col-md-6">
-            <div class="column-header"><p>Select the data you would like to download:</p></div>
+            <div class="column-header">The Algorithms</div>
+        	<div>
+                <h4>Rocchio Algorithm</h4>
+                <p>Adapted from a text-mining PU algorithm in [Rocchio, 1971]. The original method has been adapted from a binary decision to a score, allowing a variable number of negative examples to be chosen.</p>
 
-            <div class="column-note">Fields after 'Organism' are enabled successively as you select. Download is enabled when all fields are selected.</div>
+                <h4>SNOB (Selection of Negatives Through Observed)</h4>
+                <p>SNOB chooses negative examples by scoring proteins based on the empirical conditional probability of the function in question occurring, based on the other annotations in the protein.</p>
 
-            <!-- Data form -->
-            <form id="download-form" role="form" action="{{ url_for('data_request') }}" method=POST>
-                <div class="form-group">
-                    <label for="f_organism" class="col-lg-3">Organism</label>
-                    <div class="col-lg-9">
-                        <select id="f_organism" name="Organism" class="form-control input-sm">
-                            <option value="">Select an organism...</option>
-                            <option value="Human9606">Human (tax. 9606)</option>
-                            <option value="Mouse10090">Mouse (tax. 10090)</option>
-                            <option value="Worm6239">Worm (tax. 6239)</option>
-                            <option value="Arabidopsis3702">Arabidopsis (tax. 3702)</option>
-                            <option value="Rice39947">Rice (tax. 39947)</option>
-                            <option value="Yeast4932">Yeast (tax. 4932)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="f_branch" class="col-lg-3">GO Branch</label>
-                    <div class="col-lg-9">
-                        <select disabled id="f_branch" name="Branch" class="form-control input-sm">
-                            <option value="">Select a GO branch...</option>
-                            <option value="BP">Biological Process (BP)</option>
-                            <option value="CC">Cellular Component (CC)</option>
-                            <option value="MF">Molecular Function (MF)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="f_goterm" class="col-lg-3">GO Term</label>
-                    <div class="col-lg-9"> 
-                        <input disabled id="f_goterm" name="Term" type="text" class="form-control input-sm" placeholder="Enter a GO Term..." />
-                    </div>
-                </div>
-
-                <label class="col-lg-3">Algorithm</label> 
-                <div class="form-group col-lg-9">
-                    <label class="checkbox-inline"><input disabled id="alg_rocc" class="f_algorithm" name="Rocchio" type="checkbox">Rocchio</label>
-                    <label class="checkbox-inline"><input disabled id="alg_netl" class="f_algorithm" name="NETL" type="checkbox">NETL</label>
-                    <label class="checkbox-inline"><input disabled id="alg_snob" class="f_algorithm" name="SNOB" type="checkbox">SNOB</label>
-                </div>
-
-                <button disabled id="f_download" type="submit" class="btn btn-primary btn-sm">Download</button>
-            </form>
-
-            <div id="download-message" class="column-note"></div>
-
-            <br />
-
+                <h4>NETL (Negative Examples from Topic Likelihood)</h4>
+                <p>NETL selects negative examples by creating a latent topic model for each function, and then scoring a protein by the similarity of its topic profile to the average topic profile of the positive class of proteins annotated with the function in question.</p>
+        	</div>
         </div>
 
         <div class="col-md-6">
-            <div class="column-header"><p>Figure for current selection:</p></div>
-
-            <div class="column-note">Images are generated on-the-fly after an organism is selected, and increase in specificity as further fields are selected.</div>
-
-            <a id="selection-fig-link" target="_blank" href="{{ url_for('static', filename='img/pregenerated/AllOrganismAverage.png') }}">
-                <img id="selection-fig" src="{{ url_for('static', filename='img/pregenerated/AllOrganismAverage.png') }}" alt="Accuracy figure for selection">
-            </a>
-
-            <div id="figure-message" class="column-note"></div>
-
+            <div class="column-header">The Team</div>
+            <div>
+                <h4>The Lab</h4>
+                <p>This project was undertaken in the <a target="_blank" href="http://cs.nyu.edu/shasha/">Shasha</a> and <a target="_blank" href="http://bonneaulab.bio.nyu.edu/">Bonneau</a> labs, primarily as PhD work of Noah Youngs.</p>
+                <h4>Contacts</h4>
+                <p>Noah Youngs, super student scientist (<span class="email">nyoungs[at]nyu.edu</span>)</p>
+                <p>Duncan Penfold-Brown, super research engineer (<span class="email">dpb3[at]nyu.edu</span>)</p>
+                <p>Dr. Richard Bonneau, PI and supervisor (<span class="email">bonneau[at]nyu.edu</span>)</p>
+                <p>Dr. Dennis Shasha, PI and supervisor (<span class="email">shasha[at]cs.nyu.edu</span>)</p>
+            </div>
         </div>
     </div>
 
 {% endblock %}
-
-
-
-
-
-

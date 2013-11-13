@@ -284,10 +284,10 @@ def downloads():
     """Static downloads page"""
     return render_template('downloads.html')
 
-@app.route('/about')
-def about():
-    """About page"""
-    return render_template('about.html')
+@app.route('/interactive')
+def interactive():
+    """Interactive page"""
+    return render_template('interactive.html')
 
 
 if __name__ == "__main__":

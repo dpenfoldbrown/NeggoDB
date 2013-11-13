@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+{% block body %}
+    
+    <div class="jumbotron">
+        <h3>NoGO Interactive Mode</h3>
+        <p>Select values below to download negative example predictions for a specific GO term</p>
+    </div>
+
+     <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <p>Negative examples are predictions of genes that do <span class="note">NOT</span> carry out a function described by a Gene Ontology term. These negative predictions stem from observations indicating that proteins representing the gene do not perform the term's function, are not part of the process indicated by the term, or are not localized as the term defines.</p>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="column-header"><p>Select the data you would like to download:</p></div>
+
+            <div class="column-note">Fields after 'Organism' are enabled successively as you select. Download is enabled when all fields are selected.</div>
+
+            <!-- Data form -->
+            <form id="download-form" role="form" action="{{ url_for('data_request') }}" method=POST>
+                <div class="form-group">
+                    <label for="f_organism" class="col-lg-3">Organism</label>
+                    <div class="col-lg-9">
+                        <select id="f_organism" name="Organism" class="form-control input-sm">
+                            <option value="">Select an organism...</option>
+                            <option value="Human9606">Human (tax. 9606)</option>
+                            <option value="Mouse10090">Mouse (tax. 10090)</option>
+                            <option value="Worm6239">Worm (tax. 6239)</option>
+                            <option value="Arabidopsis3702">Arabidopsis (tax. 3702)</option>
+                            <option value="Rice39947">Rice (tax. 39947)</option>
+                            <option value="Yeast4932">Yeast (tax. 4932)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="f_branch" class="col-lg-3">GO Branch</label>
+                    <div class="col-lg-9">
+                        <select disabled id="f_branch" name="Branch" class="form-control input-sm">
+                            <option value="">Select a GO branch...</option>
+                            <option value="BP">Biological Process (BP)</option>
+                            <option value="CC">Cellular Component (CC)</option>
+                            <option value="MF">Molecular Function (MF)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="f_goterm" class="col-lg-3">GO Term</label>
+                    <div class="col-lg-9"> 
+                        <input disabled id="f_goterm" name="Term" type="text" class="form-control input-sm" placeholder="Enter a GO Term..." />
+                    </div>
+                </div>
+
+                <label class="col-lg-3">Algorithm</label> 
+                <div class="form-group col-lg-9">
+                    <label class="checkbox-inline"><input disabled id="alg_rocc" class="f_algorithm" name="Rocchio" type="checkbox">Rocchio</label>
+                    <label class="checkbox-inline"><input disabled id="alg_netl" class="f_algorithm" name="NETL" type="checkbox">NETL</label>
+                    <label class="checkbox-inline"><input disabled id="alg_snob" class="f_algorithm" name="SNOB" type="checkbox">SNOB</label>
+                </div>
+
+                <button disabled id="f_download" type="submit" class="btn btn-primary btn-sm">Download</button>
+            </form>
+
+            <div id="download-message" class="column-note"></div>
+
+            <br />
+
+        </div>
+
+        <div class="col-md-6">
+            <div class="column-header"><p>Figure for current selection:</p></div>
+
+            <div class="column-note">Images are generated on-the-fly after an organism is selected, and increase in specificity as further fields are selected.</div>
+
+            <a id="selection-fig-link" target="_blank" href="{{ url_for('static', filename='img/pregenerated/AllOrganismAverage.png') }}">
+                <img id="selection-fig" src="{{ url_for('static', filename='img/pregenerated/AllOrganismAverage.png') }}" alt="Accuracy figure for selection">
+            </a>
+
+            <div id="figure-message" class="column-note"></div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+
+
+
+
+
