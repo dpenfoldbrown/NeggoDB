@@ -9,6 +9,9 @@ import matplotlib.pyplot as plt
 def singleGO_validation_figure(r_x, r_y, n_x, n_y, s_x, s_y, rand_x, rand_y, go_term="GO:0000000", 
 		go_cat="NN", organism="Unknown", outfile=None, show=False):
 	
+	# Initial clear figure to avoid weird cacheing bug
+	plt.clf()
+
 	xmax = max(r_x + n_x + s_x + rand_x)
 	ymax = max(r_y + n_y + s_y + rand_y)
 	xscale = int(xmax + (xmax * 0.01))
