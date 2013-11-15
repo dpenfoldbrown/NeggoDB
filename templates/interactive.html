@@ -27,7 +27,7 @@
                     <div class="col-lg-9">
                         <select id="f_organism" name="Organism" class="form-control input-sm">
                             <option value="">Select an organism...</option>
-                            <option value="Human9606">Human (tax. 9606)</option>
+                            <option selected="selected" value="Human9606">Human (tax. 9606)</option>
                             <option value="Mouse10090">Mouse (tax. 10090)</option>
                             <option value="Worm6239">Worm (tax. 6239)</option>
                             <option value="Arabidopsis3702">Arabidopsis (tax. 3702)</option>
@@ -40,11 +40,11 @@
                 <div class="form-group">
                     <label for="f_branch" class="col-lg-3">GO Branch</label>
                     <div class="col-lg-9">
-                        <select disabled id="f_branch" name="Branch" class="form-control input-sm">
+                        <select id="f_branch" name="Branch" class="form-control input-sm">
                             <option value="">Select a GO branch...</option>
                             <option value="BP">Biological Process (BP)</option>
                             <option value="CC">Cellular Component (CC)</option>
-                            <option value="MF">Molecular Function (MF)</option>
+                            <option selected="selected" value="MF">Molecular Function (MF)</option>
                         </select>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                 <div class="form-group">
                     <label for="f_goterm" class="col-lg-3">GO Term</label>
                     <div class="col-lg-9"> 
-                        <input disabled id="f_goterm" name="Term" type="text" class="form-control input-sm" placeholder="Enter a GO Term..." />
+                        <input id="f_goterm" name="Term" type="text" class="form-control input-sm" value="GO:0003723" placeholder="Enter a GO Term..." />
                     </div>
                 </div>
 
