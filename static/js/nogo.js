@@ -24,18 +24,6 @@
     var figure_link_accessor = $("#selection-fig-link");
     var form_accessor = $("#download-form");
 
-    // Setter functions
-    function setDownloadMessage(message) {
-       $("#download-message").text(message); 
-    }
-    function setFigureMessage(message) {
-        $("#figure-message").text(message);
-    }
-    function setFigureSource(figure_ref) {
-        figure_accessor.attr("src", figure_ref);
-        figure_link_accessor.attr("href", figure_ref);
-    }
-
     // Getter functions
     function getGoFieldValues() {
         return {
@@ -52,21 +40,80 @@
         };
     }
 
+    // Setter functions
+    function setDownloadMessage(message) {
+       $("#download-message").text(message); 
+    }
+    function setFigureMessage(message) {
+        $("#figure-message").text(message);
+    }
+    function setFigureSource(figure_ref) {
+        figure_accessor.attr("src", figure_ref);
+        figure_link_accessor.attr("href", figure_ref);
+    }
 
     // Behavior on change of Field (enable next field)
-    organism_accessor.change(setBranchField);
-    branch_accessor.change(setTermField);
-    term_accessor.change(setAlgorithmsField);
-    algorithms_accessor.change(setButtonField);
+    organism_accessor.change(fieldUpdated);
+    branch_accessor.change(fieldUpdated);
+    term_accessor.change(fieldUpdated);
+    algorithms_accessor.change(algorithmUpdated);
 
-    // Behavior on form submit (don't prevent default)
+    function fieldUpdated(e) {
+        updateButton();
+        updateFigure();
+    }
+
+    function algorithmUpdated(e) {
+        updateButton();
+    }
+
+    // Behavior on form submit
     form_accessor.submit(function (e) {
-        setDownloadMessage("Please be patient - this may take a minute (fewer algorithm selections reduces time)");
+        // If all values are populated, display patience and submit form (return true)
+        if (allFieldsSet() && algorithmSelected()) {
+            setDownloadMessage("Please be patient - this may take a minute (fewer algorithm selections reduces time)");
+            return true;
+        }
+        // If not, alert re: missing selections and prevent form submission (return false)
+        else  {
+            alert("Must select a value for all fields and at least one algorithm!");
+            return false;
+        }
     });
 
+
     // Utility functions
+    function allFieldsSet() {
+        var fields = getGoFieldValues();
+        if (fields["organism"] != "" && fields["branch"] != "" && fields["term"] != "") {
+            return true;
+        }
+        return false;
+    }
+
+    function algorithmSelected() {
+        var algorithms = getAlgorithmValues();
+        if (algorithms["rocchio"] || algorithms["netl"] || algorithms["snob"]) {
+            return true;
+        }
+        return false;
+    }
+
+    function updateButton() {
+        if (allFieldsSet() && algorithmSelected()) {
+            button_accessor.removeAttr("disabled");
+            return;  
+        }
+        button_accessor.attr("disabled", "disabled");
+    }
+
     function updateFigure(organism, branch, term) {
         var figure_ref = FigureLocation;
+        var fields = getGoFieldValues();
+        var organism = fields["organism"];
+        var branch = fields["branch"];
+        var term = fields["term"];
+
         setFigureMessage("");
 
         if (organism == "") {
@@ -121,57 +168,8 @@
         }
     }
 
-    // Field-set handlers
-    function setBranchField(e) {
-        var figure_ref;
-        var goFields = getGoFieldValues();
-        if (goFields["organism"] == "") {
-            branch_accessor.attr("disabled", "disabled");
-        }
-        else {
-            branch_accessor.removeAttr("disabled");
-        }
-        updateFigure(goFields["organism"], goFields["branch"], goFields["term"]);
-    }
-    
-    function setTermField(e) {
-        var figure_ref;
-        var goFields = getGoFieldValues();
-        if (goFields["branch"] == "") {
-            term_accessor.attr("disabled", "disabled");
-        } else {
-            term_accessor.removeAttr("disabled");
-        }
-        updateFigure(goFields["organism"], goFields["branch"], goFields["term"]);
-    }
-    
-    function setAlgorithmsField(e) {
-        var figure_ref;
-        var goFields = getGoFieldValues();
-        if (goFields["term"] == "") {
-            algorithms_accessor.attr("disabled", "disabled");
-        }
-        else {
-            algorithms_accessor.removeAttr("disabled");
-            updateFigure(goFields["organism"], goFields["branch"], goFields["term"]);
-        }
-    }
-    
-    function setButtonField(e) {
-        algorithms = getAlgorithmValues();
-        if (algorithms["rocchio"] || algorithms["netl"] || algorithms["snob"]) {
-            button_accessor.removeAttr("disabled");
-        } else {
-            button_accessor.attr("disabled", "disabled");
-        }
-    }
-
-    // On page load (here), call all functions to make sure of correct enable/disable and figure scheme
+    // On page load (here), call functions to initialize page
     setDownloadMessage("");
     setFigureMessage(FigureCaption);
-    setBranchField();
-    setTermField();
-    setAlgorithmsField();
-    setButtonField();
 
  })
