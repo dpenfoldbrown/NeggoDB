@@ -3,6 +3,7 @@ nogo.web.log
 local_test
 static/files/generated/*
 static/files/pregenerated/*
+static/files/NoGo_Db_Code.zip
 static/img/generated/*
 static/img/pregenerated/*
 
