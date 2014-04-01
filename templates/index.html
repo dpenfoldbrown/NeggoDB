@@ -18,8 +18,10 @@
             <h4>Abstract</h4>
             <p>Negative examples: genes that are known not to carry out a given protein function, are rarely recorded in genome and proteome annotation databases, such as the Gene Ontology database. Negative examples are required, however, to do accurate protein function prediction. Unfortunately, most protein function prediction efforts have relied on a variety of heuristics for the choice of negative examples. Determining the accuracy of such methods is itself a non-trivial task, as the Open World Assumption as applied to gene annotations rules out many traditional validation metrics. We present a rigorous comparison of these heuristics, utilizing a temporal holdout, and a novel evaluation strategy for negative examples.</p> 
             <p>We add to this comparison several algorithms adapted from Positive-Unlabeled learning scenarios in text-classification, which are the current state of the art methods for generating negative examples in low-annotation contexts. Lastly, we present two novel algorithms of our own construction, one based on empirical conditional probability, and the other using topic modeling applied to genes and annotations. We demonstrate that our algorithms achieve significantly fewer incorrect negative example predictions than the current state of the art, using multiple benchmarks covering multiple organisms with complete genomes. Our methods may be applied to generate negative examples for any type of method that deals with protein function, and to this end we provide a database of negative examples in several well-studied organisms, for general use.</p>
-            <h4>Submission</h4>
-            <p><span class="note">Coming soon.</span></p>
+            <h4>Publication</h4>
+            <p><span class="note">Under review.</span></p>
+            <h4>Code</h4>
+            <p><a href="{{ url_for('downloads') }}">Downloads</a></p>
         </div>
     </div>
 
@@ -44,7 +46,7 @@
             <div class="column-header">The Team</div>
             <div>
                 <h4>The Lab</h4>
-                <p>This project was undertaken in the <a target="_blank" href="http://cs.nyu.edu/shasha/">Shasha</a> and <a target="_blank" href="http://bonneaulab.bio.nyu.edu/">Bonneau</a> labs, primarily as PhD work of Noah Youngs.</p>
+                <p>This project was undertaken in the <a target="_blank" href="http://cs.nyu.edu/shasha/">Shasha</a> and <a target="_blank" href="http://bonneaulab.bio.nyu.edu/">Bonneau</a> labs as PhD work of Noah Youngs.</p>
                 <h4>Contacts</h4>
                 <p>Noah Youngs, super student scientist (<span class="email">nyoungs[at]nyu.edu</span>)</p>
                 <p>Duncan Penfold-Brown, super research engineer (<span class="email">dpb3[at]nyu.edu</span>)</p>
@@ -52,6 +54,15 @@
                 <p>Dr. Dennis Shasha, PI and supervisor (<span class="email">shasha[at]cs.nyu.edu</span>)</p>
             </div>
         </div>
+
+        <div class="col-md-6">
+            <div class="column-header">Database Version</div>
+            <div>
+                <p>Version 1.0.</p>
+                <p><a target="_blank" href="http://www.geneontology.org/">GO</a> annotations obtained 04/2013. Next update 04/2014. Updates every subsequent three months.</p>
+            </div>
+        </div>
+
     </div>
 
 {% endblock %}
